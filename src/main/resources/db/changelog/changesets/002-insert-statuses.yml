@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-insert-statuses
+      author: olkulagina
+      changes:
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: name
+                  value: 'Новый'
+              - column:
+                  name: color
+                  value: 'gray'
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: name
+                  value: 'В переговорах'
+              - column:
+                  name: color
+                  value: 'yellow'
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: name
+                  value: 'Сделка'
+              - column:
+                  name: color
+                  value: 'green'
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: name
+                  value: 'Отказ'
+              - column:
+                  name: color
+                  value: 'red'
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: name
+                  value: 'Внимание'
+              - column:
+                  name: color
+                  value: 'orange'

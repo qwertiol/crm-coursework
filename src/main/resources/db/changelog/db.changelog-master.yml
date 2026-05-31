@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: changesets/001-create-tables.yml
+      relativeToChangelogFile: true
+  - include:
+      file: changesets/002-insert-statuses.yml
+      relativeToChangelogFile: true
