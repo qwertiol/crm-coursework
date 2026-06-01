@@ -3,11 +3,13 @@ package mephi.olkulagina.crm.client;
 import mephi.olkulagina.crm.status.Status;
 import mephi.olkulagina.crm.status.StatusRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ClientService {
 
     private final ClientRepository clientRepository;
@@ -18,10 +20,12 @@ public class ClientService {
         this.statusRepository = statusRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Client> findAll() {
         return clientRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Client> findById(Long id) {
         return clientRepository.findById(id);
     }
