@@ -1,12 +1,10 @@
 package mephi.olkulagina.crm.client;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import mephi.olkulagina.crm.status.Status;
 
 @Entity
 @Table(name = "client")
-@Data
 public class Client {
 
     @Id
@@ -24,4 +22,55 @@ public class Client {
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
+
+    public Client() {
+    }
+
+    public Client(Long id, String fullName, String phone, String company, Status status) {
+        this.id = id;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.company = company;
+        this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

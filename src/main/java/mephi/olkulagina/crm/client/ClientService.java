@@ -1,6 +1,5 @@
 package mephi.olkulagina.crm.client;
 
-import lombok.RequiredArgsConstructor;
 import mephi.olkulagina.crm.status.Status;
 import mephi.olkulagina.crm.status.StatusRepository;
 import org.springframework.stereotype.Service;
@@ -9,11 +8,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ClientService {
 
     private final ClientRepository clientRepository;
     private final StatusRepository statusRepository;
+
+    public ClientService(ClientRepository clientRepository, StatusRepository statusRepository) {
+        this.clientRepository = clientRepository;
+        this.statusRepository = statusRepository;
+    }
 
     public List<Client> findAll() {
         return clientRepository.findAll();

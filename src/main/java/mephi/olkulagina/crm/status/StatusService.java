@@ -1,16 +1,18 @@
 package mephi.olkulagina.crm.status;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class StatusService {
 
     private final StatusRepository statusRepository;
+
+    public StatusService(StatusRepository statusRepository) {
+        this.statusRepository = statusRepository;
+    }
 
     public List<Status> findAll() {
         return statusRepository.findAll();
