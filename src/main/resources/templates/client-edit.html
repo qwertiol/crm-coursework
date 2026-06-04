@@ -6,40 +6,83 @@
     <main>
         <div th:replace="~{layout :: messages}"></div>
         <h1>Edit Client</h1>
-        
+
         <form th:action="@{/clients/{id}/update(id=${client.id})}" method="post">
-            <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="fullName" th:value="${client.fullName}" required>
-            
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" th:value="${client.lastName}" required>
+
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" th:value="${client.firstName}" required>
+
+            <label for="middleName">Middle Name</label>
+            <input type="text" id="middleName" name="middleName" th:value="${client.middleName}">
+
             <label for="phone">Phone</label>
             <input type="text" id="phone" name="phone" th:value="${client.phone}">
-            
+
             <label for="email">Email</label>
             <input type="email" id="email" name="email" th:value="${client.email}">
-            
-            <label for="region">Region</label>
-            <input type="text" id="region" name="region" th:value="${client.region}">
-            
-            <label for="company">Company</label>
-            <input type="text" id="company" name="company" th:value="${client.company}">
-            
+
+            <label for="companyId">Company</label>
+            <select id="companyId" name="companyId">
+                <option value="">— Select Company —</option>
+                <option th:each="c : ${companies}"
+                        th:value="${c.id}"
+                        th:text="${c.name}"
+                        th:selected="${client.company != null and c.id == client.company.id}"></option>
+            </select>
+
+            <label for="regionId">Region</label>
+            <select id="regionId" name="regionId">
+                <option value="">— Select Region —</option>
+                <option th:each="r : ${regions}"
+                        th:value="${r.id}"
+                        th:text="${r.name}"
+                        th:selected="${client.region != null and r.id == client.region.id}"></option>
+            </select>
+
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+                <option value="">— Select Gender —</option>
+                <option value="MALE" th:selected="${client.gender != null and client.gender.name() == 'MALE'}">Male</option>
+                <option value="FEMALE" th:selected="${client.gender != null and client.gender.name() == 'FEMALE'}">Female</option>
+                <option value="NOT_SPECIFIED" th:selected="${client.gender != null and client.gender.name() == 'NOT_SPECIFIED'}">Not specified</option>
+            </select>
+
+            <label for="source">Source</label>
+            <select id="source" name="source">
+                <option value="">— Select Source —</option>
+                <option value="WEBSITE" th:selected="${client.source != null and client.source.name() == 'WEBSITE'}">Website</option>
+                <option value="REFERRAL" th:selected="${client.source != null and client.source.name() == 'REFERRAL'}">Referral</option>
+                <option value="SOCIAL_MEDIA" th:selected="${client.source != null and client.source.name() == 'SOCIAL_MEDIA'}">Social media</option>
+                <option value="DIRECT" th:selected="${client.source != null and client.source.name() == 'DIRECT'}">Direct</option>
+                <option value="PARTNER" th:selected="${client.source != null and client.source.name() == 'PARTNER'}">Partner</option>
+                <option value="OTHER" th:selected="${client.source != null and client.source.name() == 'OTHER'}">Other</option>
+            </select>
+
             <label for="birthDate">Birth Date</label>
             <input type="date" id="birthDate" name="birthDate" th:value="${client.birthDate != null} ? ${client.birthDate} : ''">
-            
+
             <label for="loyaltyCardNumber">Loyalty Card Number</label>
             <input type="text" id="loyaltyCardNumber" name="loyaltyCardNumber" th:value="${client.loyaltyCardNumber}">
-            
+
+            <label for="registrationDate">Registration Date</label>
+            <input type="date" id="registrationDate" name="registrationDate" th:value="${client.registrationDate != null} ? ${client.registrationDate} : ''">
+
+            <label for="lastActivityDate">Last Activity Date</label>
+            <input type="date" id="lastActivityDate" name="lastActivityDate" th:value="${client.lastActivityDate != null} ? ${client.lastActivityDate} : ''">
+
             <label for="statusId">Status</label>
             <select id="statusId" name="statusId" required>
-                <option th:each="s : ${statuses}" 
-                        th:value="${s.id}" 
-                        th:text="${s.name}" 
+                <option th:each="s : ${statuses}"
+                        th:value="${s.id}"
+                        th:text="${s.name}"
                         th:selected="${client.status != null and s.id == client.status.id}"></option>
             </select>
-            
+
             <button type="submit">Save Changes</button>
         </form>
-        
+
         <div class="actions">
             <a th:href="@{/clients/{id}(id=${client.id})}">Cancel</a>
         </div>

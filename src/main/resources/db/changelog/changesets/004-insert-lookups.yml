@@ -1,0 +1,169 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-insert-lookups
+      author: olkulagina
+      changes:
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'London' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'New York' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Amsterdam' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Los Angeles' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Austin' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Phoenix' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Berlin' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Paris' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Tokyo' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Singapore' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Sydney' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Toronto' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Chicago' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'San Francisco' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Dubai' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Mumbai' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Seoul' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Madrid' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Rome' }
+        - insert:
+            tableName: region
+            columns:
+              - column: { name: name, value: 'Vienna' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Acme Corp' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Globex' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Initech' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Hooli' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Massive Dynamic' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Stark Industries' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Wayne Enterprises' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Cyberdyne' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Tyrell Corp' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Aperture Science' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Black Mesa' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Soylent Corp' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Umbrella Corp' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Vandelay Industries' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Oceanic Airlines' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Dharma Initiative' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Gringotts' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Ollivanders' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Wonka Industries' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Bubba Gump' }
+        - insert:
+            tableName: company
+            columns:
+              - column: { name: name, value: 'Dunder Mifflin' }

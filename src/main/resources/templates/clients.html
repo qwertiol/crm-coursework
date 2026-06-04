@@ -6,30 +6,30 @@
     <main>
         <div th:replace="~{layout :: messages}"></div>
         <h1>Clients</h1>
-        
+
         <p class="results-count">Total clients: <span th:text="${#lists.size(clients)}"></span></p>
-        
+
         <p th:if="${#lists.isEmpty(clients)}">No clients found.</p>
-        
+
         <table th:if="${!#lists.isEmpty(clients)}">
             <thead>
                 <tr>
-                    <th>Full Name</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
                     <th>Phone</th>
-                    <th>Email</th>
                     <th>Company</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="client : ${clients}" th:onclick="|window.location='@{/clients/{id}(id=${client.id})}'|" style="cursor: pointer;">
-                    <td th:text="${client.fullName}">John Doe</td>
+                    <td th:text="${client.lastName}">Doe</td>
+                    <td th:text="${client.firstName}">John</td>
                     <td th:text="${client.phone}">+1234567890</td>
-                    <td th:text="${client.email != null} ? ${client.email} : '—'">email@example.com</td>
-                    <td th:text="${client.company}">Acme Corp</td>
+                    <td th:text="${client.company != null} ? ${client.company.name} : '—'">Acme Corp</td>
                     <td>
-                        <span th:if="${client.status != null}" 
-                              th:text="${client.status.name}" 
+                        <span th:if="${client.status != null}"
+                              th:text="${client.status.name}"
                               th:style="'color: ' + ${client.status.color} + '; font-weight: 600;'">Active</span>
                         <span th:if="${client.status == null}">No status</span>
                     </td>
