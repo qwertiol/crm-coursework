@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: 'Новый'
+                  value: 'New'
               - column:
                   name: color
                   value: 'gray'
@@ -17,16 +17,16 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: 'В переговорах'
+                  value: 'In Negotiation'
               - column:
                   name: color
-                  value: 'yellow'
+                  value: 'blue'
         - insert:
             tableName: status
             columns:
               - column:
                   name: name
-                  value: 'Сделка'
+                  value: 'Deal'
               - column:
                   name: color
                   value: 'green'
@@ -35,7 +35,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: 'Отказ'
+                  value: 'Rejected'
               - column:
                   name: color
                   value: 'red'
@@ -44,7 +44,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: 'Внимание'
+                  value: 'Attention'
               - column:
                   name: color
                   value: 'orange'

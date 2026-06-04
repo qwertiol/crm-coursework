@@ -7,6 +7,8 @@
         <div th:replace="~{layout :: messages}"></div>
         <h1>Clients</h1>
         
+        <p class="results-count">Total clients: <span th:text="${#lists.size(clients)}"></span></p>
+        
         <p th:if="${#lists.isEmpty(clients)}">No clients found.</p>
         
         <table th:if="${!#lists.isEmpty(clients)}">
@@ -14,6 +16,7 @@
                 <tr>
                     <th>Full Name</th>
                     <th>Phone</th>
+                    <th>Email</th>
                     <th>Company</th>
                     <th>Status</th>
                 </tr>
@@ -22,8 +25,14 @@
                 <tr th:each="client : ${clients}" th:onclick="|window.location='@{/clients/{id}(id=${client.id})}'|" style="cursor: pointer;">
                     <td th:text="${client.fullName}">John Doe</td>
                     <td th:text="${client.phone}">+1234567890</td>
+                    <td th:text="${client.email != null} ? ${client.email} : '—'">email@example.com</td>
                     <td th:text="${client.company}">Acme Corp</td>
-                    <td th:text="${client.status != null} ? ${client.status.name} : 'No status'">Active</td>
+                    <td>
+                        <span th:if="${client.status != null}" 
+                              th:text="${client.status.name}" 
+                              th:style="'color: ' + ${client.status.color} + '; font-weight: 600;'">Active</span>
+                        <span th:if="${client.status == null}">No status</span>
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-add-client-fields
+      author: olkulagina
+      changes:
+        - addColumn:
+            tableName: client
+            columns:
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: region
+                  type: varchar(255)
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: loyalty_card_number
+                  type: varchar(255)

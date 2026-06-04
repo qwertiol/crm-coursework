@@ -14,8 +14,20 @@
             <label for="phone">Phone</label>
             <input type="text" id="phone" name="phone" th:value="${client.phone}">
             
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" th:value="${client.email}">
+            
+            <label for="region">Region</label>
+            <input type="text" id="region" name="region" th:value="${client.region}">
+            
             <label for="company">Company</label>
             <input type="text" id="company" name="company" th:value="${client.company}">
+            
+            <label for="birthDate">Birth Date</label>
+            <input type="date" id="birthDate" name="birthDate" th:value="${client.birthDate != null} ? ${client.birthDate} : ''">
+            
+            <label for="loyaltyCardNumber">Loyalty Card Number</label>
+            <input type="text" id="loyaltyCardNumber" name="loyaltyCardNumber" th:value="${client.loyaltyCardNumber}">
             
             <label for="statusId">Status</label>
             <select id="statusId" name="statusId" required>

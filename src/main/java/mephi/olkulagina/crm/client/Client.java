@@ -2,6 +2,7 @@ package mephi.olkulagina.crm.client;
 
 import jakarta.persistence.*;
 import mephi.olkulagina.crm.status.Status;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "client")
@@ -22,6 +23,18 @@ public class Client {
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "region")
+    private String region;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
+    @Column(name = "loyalty_card_number")
+    private String loyaltyCardNumber;
 
     public Client() {
     }
@@ -72,5 +85,37 @@ public class Client {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getLoyaltyCardNumber() {
+        return loyaltyCardNumber;
+    }
+
+    public void setLoyaltyCardNumber(String loyaltyCardNumber) {
+        this.loyaltyCardNumber = loyaltyCardNumber;
     }
 }

@@ -5,6 +5,7 @@
     <nav th:replace="~{layout :: nav}"></nav>
     <main>
         <div th:replace="~{layout :: messages}"></div>
+        <div th:if="${param.error}" class="alert error">Registration failed. Please try again.</div>
         <h1>Register</h1>
         <form th:action="@{/register}" method="post">
             <label for="username">Username</label>

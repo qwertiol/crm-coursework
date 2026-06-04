@@ -5,18 +5,65 @@
     <nav th:replace="~{layout :: nav}"></nav>
     <main>
         <div th:replace="~{layout :: messages}"></div>
-        <h1>Client Details</h1>
-        
-        <div class="details">
-            <p><strong>Full Name:</strong> <span th:text="${client.fullName}">John Doe</span></p>
-            <p><strong>Phone:</strong> <span th:text="${client.phone}">+1234567890</span></p>
-            <p><strong>Company:</strong> <span th:text="${client.company}">Acme Corp</span></p>
-            <p><strong>Current Status:</strong> <span th:text="${client.status != null} ? ${client.status.name} : 'No status'">Active</span></p>
+        <div class="client-card">
+            <div class="client-main">
+                <div class="info-block">
+                    <h3>Contact Information</h3>
+                    <div class="info-row">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value" th:text="${client.fullName}">John Doe</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value" th:text="${client.phone}">+1234567890</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email</span>
+                        <span class="info-value" th:text="${client.email != null} ? ${client.email} : '—'">email@example.com</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Region</span>
+                        <span class="info-value" th:text="${client.region != null} ? ${client.region} : '—'">Moscow</span>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <h3>Company</h3>
+                    <div class="info-row">
+                        <span class="info-label">Company Name</span>
+                        <span class="info-value" th:text="${client.company}">Acme Corp</span>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <h3>Loyalty Program</h3>
+                    <div class="info-row">
+                        <span class="info-label">Card Number</span>
+                        <span class="info-value" th:text="${client.loyaltyCardNumber != null} ? ${client.loyaltyCardNumber} : '—'">12345</span>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <h3>Personal</h3>
+                    <div class="info-row">
+                        <span class="info-label">Birth Date</span>
+                        <span class="info-value" th:text="${client.birthDate != null} ? ${client.birthDate} : '—'">1990-01-01</span>
+                    </div>
+                </div>
+            </div>
+            <div class="client-side">
+                <div class="actions" style="text-align: right; margin-bottom: 1rem;">
+                    <a th:href="@{/clients/{id}/edit(id=${client.id})}" class="btn">Edit</a>
+                </div>
+                <div class="info-block">
+                    <h3>Current Status</h3>
+                    <span th:if="${client.status != null}" 
+                          class="status-badge" 
+                          th:style="'color: ' + ${client.status.color}" 
+                          th:text="${client.status.name}">Active</span>
+                    <span th:if="${client.status == null}">No status</span>
+                </div>
+            </div>
         </div>
-        
-        <div class="actions">
-            <a th:href="@{/clients/{id}/edit(id=${client.id})}">Edit</a>
-            <a th:href="@{/clients}">Back to list</a>
+        <div style="margin-top: 1.5rem;">
+            <a th:href="@{/clients}">← Back to Client List</a>
         </div>
     </main>
     <footer th:replace="~{layout :: footer}"></footer>
