@@ -16,7 +16,7 @@ public class UserService {
 
     public User registerUser(String username, String password) {
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Пользователь уже существует: " + username);
+            throw new RuntimeException("User already exists: " + username);
         }
         User user = new User();
         user.setUsername(username);

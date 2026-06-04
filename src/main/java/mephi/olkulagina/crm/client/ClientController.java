@@ -33,7 +33,7 @@ public class ClientController {
     @GetMapping("/clients/{id}")
     public String viewClient(@PathVariable Long id, Model model) {
         Client client = clientService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Клиент не найден"));
+                .orElseThrow(() -> new RuntimeException("Client not found"));
         model.addAttribute("client", client);
         return "client-detail";
     }
@@ -41,7 +41,7 @@ public class ClientController {
     @GetMapping("/clients/{id}/edit")
     public String editClient(@PathVariable Long id, Model model) {
         Client client = clientService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Клиент не найден"));
+                .orElseThrow(() -> new RuntimeException("Client not found"));
         List<Status> statuses = statusService.findAll();
         model.addAttribute("client", client);
         model.addAttribute("statuses", statuses);
@@ -57,15 +57,15 @@ public class ClientController {
             @RequestParam Long statusId,
             RedirectAttributes redirectAttributes) {
         Client client = clientService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Клиент не найден"));
+                .orElseThrow(() -> new RuntimeException("Client not found"));
         client.setFullName(fullName);
         client.setPhone(phone);
         client.setCompany(company);
         Status status = statusService.findById(statusId)
-                .orElseThrow(() -> new RuntimeException("Статус не найден"));
+                .orElseThrow(() -> new RuntimeException("Status not found"));
         client.setStatus(status);
         clientService.save(client);
-        redirectAttributes.addFlashAttribute("successMessage", "Изменения сохранены");
+        redirectAttributes.addFlashAttribute("successMessage", "Changes saved successfully");
         return "redirect:/clients/" + id;
     }
 }

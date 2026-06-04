@@ -30,7 +30,7 @@ public class AuthController {
     @PostMapping("/register")
     public String doRegister(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
         userService.registerUser(user.getUsername(), user.getPassword());
-        redirectAttributes.addFlashAttribute("successMessage", "Регистрация успешна. Войдите в систему.");
+        redirectAttributes.addFlashAttribute("successMessage", "Registration successful. Please log in.");
         return "redirect:/login";
     }
 }

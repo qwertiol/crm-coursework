@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Edit Client')}"></head>
+<body>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <div th:replace="~{layout :: messages}"></div>
+        <h1>Edit Client</h1>
+        
+        <form th:action="@{/clients/{id}/update(id=${client.id})}" method="post">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" th:value="${client.fullName}" required>
+            
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" th:value="${client.phone}">
+            
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" th:value="${client.company}">
+            
+            <label for="statusId">Status</label>
+            <select id="statusId" name="statusId" required>
+                <option th:each="s : ${statuses}" 
+                        th:value="${s.id}" 
+                        th:text="${s.name}" 
+                        th:selected="${client.status != null and s.id == client.status.id}"></option>
+            </select>
+            
+            <button type="submit">Save Changes</button>
+        </form>
+        
+        <div class="actions">
+            <a th:href="@{/clients/{id}(id=${client.id})}">Cancel</a>
+        </div>
+    </main>
+    <footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
