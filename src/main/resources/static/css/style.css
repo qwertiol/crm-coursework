@@ -37,7 +37,6 @@ nav {
     display: flex;
     align-items: center;
     gap: 1rem;
-    line-height: 1;
 }
 
 nav a, nav button {
@@ -166,10 +165,10 @@ h1 {
     background: #219a52;
 }
 
-.search-btn svg {
-    width: 18px;
-    height: 18px;
-    pointer-events: none;
+.search-icon {
+    font-size: 16px;
+    line-height: 1;
+    display: inline-block;
 }
 
 /* Filter block */
@@ -206,13 +205,37 @@ h1 {
     margin: 0;
 }
 
-.status-badge {
+.status-badge-filter {
     display: inline-block;
-    padding: 0.25rem 0.6rem;
-    border-radius: 12px;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
     font-weight: 600;
-    font-size: 0.8rem;
-    opacity: 0.50;
+    font-size: 0.75rem;
+}
+
+.status-new {
+    background: #a0aec0;
+    color: white;
+}
+
+.status-negotiation {
+    background: #63b3ed;
+    color: white;
+}
+
+.status-deal {
+    background: #68d391;
+    color: white;
+}
+
+.status-rejected {
+    background: #fc8181;
+    color: white;
+}
+
+.status-attention {
+    background: #f6ad55;
+    color: white;
 }
 
 .filter-btn {
@@ -398,16 +421,16 @@ button[type="submit"]:hover {
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
 
-/* Client detail */
+/* Client detail — rebalanced: wider side panel */
 .client-card {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     margin-top: 1rem;
     align-items: flex-start;
 }
 
 .client-main {
-    flex: 2;
+    flex: 1.6;
 }
 
 .client-side {
@@ -607,6 +630,15 @@ button[type="submit"]:hover {
     background: #2980b9;
 }
 
+/* Detail status badges — larger, vivid modern colors */
+.status-badge-detail {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
 /* Suggestions */
 .suggestions-dropdown {
     display: none;
@@ -635,6 +667,15 @@ button[type="submit"]:hover {
     background: #f1f1f1;
 }
 
+/* Autocomplete field */
+.autocomplete-field {
+    position: relative;
+}
+
+.autocomplete-field input {
+    width: 100%;
+}
+
 /* Footer */
 footer {
     text-align: center;
@@ -643,8 +684,28 @@ footer {
     margin-top: 2rem;
 }
 
-.search-icon {
-    font-size: 16px;
-    line-height: 1;
-    display: inline-block;
+/* Table status text colors */
+.status-text-new {
+    color: #a0aec0;
+    font-weight: 600;
+}
+
+.status-text-negotiation {
+    color: #63b3ed;
+    font-weight: 600;
+}
+
+.status-text-deal {
+    color: #48bb78;
+    font-weight: 600;
+}
+
+.status-text-rejected {
+    color: #fc8181;
+    font-weight: 600;
+}
+
+.status-text-attention {
+    color: #f6ad55;
+    font-weight: 600;
 }

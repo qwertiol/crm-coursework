@@ -54,8 +54,8 @@
                             <label th:each="s : ${statuses}" class="status-checkbox">
                                 <input type="checkbox" name="statusIds" th:value="${s.id}"
                                        th:checked="${#lists.contains(selectedStatusIds, s.id)}">
-                                <span class="status-badge" th:text="${s.name}" 
-                                      th:style="'background-color: ' + ${s.color} + '; color: white;'">Status</span>
+                                <span class="status-badge-filter" th:text="${s.name}" 
+                                      th:classappend="${s.name == 'New'} ? ' status-new' : (${s.name == 'In Negotiation'} ? ' status-negotiation' : (${s.name == 'Deal'} ? ' status-deal' : (${s.name == 'Rejected'} ? ' status-rejected' : ' status-attention')))">Status</span>
                             </label>
                         </div>
                         <button type="submit" class="filter-btn">Filter</button>
@@ -81,19 +81,19 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr th:each="client : ${clients}" th:onclick="|window.location='@{/clients/{id}(id=${client.id})}'|" style="cursor: pointer;">
-                            <td th:text="${client.firstName} + ' ' + ${client.lastName}">John Doe</td>
-                            <td th:text="${client.phone != null} ? ${client.phone} : '—'">+1234567890</td>
-                            <td th:text="${client.company != null} ? ${client.company.name} : '—'">Acme Corp</td>
-                            <td>
-                                <span th:if="${client.status != null}"
-                                      th:text="${client.status.name}"
-                                      th:style="'color: ' + ${client.status.color} + '; font-weight: 600;'">Active</span>
-                                <span th:if="${client.status == null}">No status</span>
-                            </td>
-                        </tr>
-                    </tbody>
+                        <tbody>
+                            <tr th:each="client : ${clients}" th:onclick="|window.location='@{/clients/{id}(id=${client.id})}'|" style="cursor: pointer;">
+                                <td th:text="${client.firstName} + ' ' + ${client.lastName}">John Doe</td>
+                                <td th:text="${client.phone != null} ? ${client.phone} : '—'">+1234567890</td>
+                                <td th:text="${client.company != null} ? ${client.company.name} : '—'">Acme Corp</td>
+                                <td>
+                                    <span th:if="${client.status != null}"
+                                          th:text="${client.status.name}"
+                                          th:classappend="${client.status.name == 'New'} ? ' status-text-new' : (${client.status.name == 'In Negotiation'} ? ' status-text-negotiation' : (${client.status.name == 'Deal'} ? ' status-text-deal' : (${client.status.name == 'Rejected'} ? ' status-text-rejected' : ' status-text-attention')))">Active</span>
+                                    <span th:if="${client.status == null}" class="status-text-new">No status</span>
+                                </td>
+                            </tr>
+                        </tbody>
                 </table>
 
                 <div class="pagination" th:if="${totalPages > 1}">

@@ -99,16 +99,16 @@
                 </div>
                 <div class="client-side">
                     <div class="info-block">
-                        <h3>Deal Info</h3>
+                        <h3>Activity Info</h3>
                         <div class="info-row">
                             <span class="info-label">Status</span>
                             <span class="info-value">
                                 <div class="status-editor" id="statusEditor">
                                     <div class="status-display">
-                                        <span class="status-badge" th:if="${client.status != null}"
+                                        <span class="status-badge-detail" th:if="${client.status != null}"
                                               th:text="${client.status.name}"
-                                              th:style="'background-color: ' + ${client.status.color} + '; color: white;'">Active</span>
-                                        <span th:if="${client.status == null}" class="status-badge" style="background-color: #999; color: white;">No status</span>
+                                              th:classappend="${client.status.name == 'New'} ? ' status-new' : (${client.status.name == 'In Negotiation'} ? ' status-negotiation' : (${client.status.name == 'Deal'} ? ' status-deal' : (${client.status.name == 'Rejected'} ? ' status-rejected' : ' status-attention')))">Active</span>
+                                        <span th:if="${client.status == null}" class="status-badge-detail status-new">No status</span>
                                         <span class="status-edit-icon" onclick="toggleStatusEdit()" title="Change status">✎</span>
                                     </div>
                                     <div class="status-dropdown" id="statusDropdown">
