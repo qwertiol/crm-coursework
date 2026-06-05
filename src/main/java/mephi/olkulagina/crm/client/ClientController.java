@@ -1,7 +1,9 @@
 package mephi.olkulagina.crm.client;
 
+import mephi.olkulagina.crm.company.CompanyRepository;
 import mephi.olkulagina.crm.company.CompanyService;
 import mephi.olkulagina.crm.region.RegionService;
+import mephi.olkulagina.crm.search.*;
 import mephi.olkulagina.crm.status.StatusService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,13 +26,18 @@ public class ClientController {
     private final StatusService statusService;
     private final RegionService regionService;
     private final CompanyService companyService;
+    private final ClientRepository clientRepository;
+    private final CompanyRepository companyRepository;
 
     public ClientController(ClientService clientService, StatusService statusService,
-                            RegionService regionService, CompanyService companyService) {
+                            RegionService regionService, CompanyService companyService,
+                            ClientRepository clientRepository, CompanyRepository companyRepository) {
         this.clientService = clientService;
         this.statusService = statusService;
         this.regionService = regionService;
         this.companyService = companyService;
+        this.clientRepository = clientRepository;
+        this.companyRepository = companyRepository;
     }
 
     @GetMapping("/clients")
@@ -38,10 +45,27 @@ public class ClientController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "30") int size,
             @RequestParam(required = false) List<Long> statusIds,
+            @RequestParam(required = false) String nameQuery,
+            @RequestParam(required = false) String companyQuery,
             Model model) {
 
         PageRequest pageable = PageRequest.of(page, size, Sort.by("lastName").ascending());
-        Page<Client> clientPage = clientService.findClients(statusIds, pageable);
+
+        SearchRequest request = new SearchRequest();
+        request.setNameQuery(nameQuery);
+        request.setCompanyQuery(companyQuery);
+        request.setStatusIds(statusIds);
+
+        CombinedSearchHandler combined = new CombinedSearchHandler(clientRepository, companyRepository);
+        NameSearchHandler nameHandler = new NameSearchHandler(clientRepository);
+        CompanySearchHandler companyHandler = new CompanySearchHandler(clientRepository, companyRepository);
+        NoCriteriaSearchHandler noCriteria = new NoCriteriaSearchHandler(clientRepository);
+
+        combined.setNext(nameHandler);
+        nameHandler.setNext(companyHandler);
+        companyHandler.setNext(noCriteria);
+
+        Page<Client> clientPage = combined.handle(request, pageable);
 
         model.addAttribute("clients", clientPage.getContent());
         model.addAttribute("currentPage", page);
@@ -50,6 +74,8 @@ public class ClientController {
         model.addAttribute("statuses", statusService.findAll());
         model.addAttribute("selectedStatusIds", statusIds != null ? statusIds : Collections.emptyList());
         model.addAttribute("resultsCount", clientPage.getTotalElements());
+        model.addAttribute("nameQuery", nameQuery);
+        model.addAttribute("companyQuery", companyQuery);
 
         if (statusIds != null && !statusIds.isEmpty()) {
             model.addAttribute("filterMessage", "Showing " + clientPage.getTotalElements() + " clients filtered by selected statuses");

@@ -7,9 +7,34 @@
         <div th:replace="~{layout :: messages}"></div>
         <h1>Clients</h1>
 
+        <div class="search-block">
+            <h3>Search</h3>
+            <form th:action="@{/clients}" method="get" id="searchForm">
+                <div class="search-row">
+                    <div class="search-field">
+                        <label for="nameQuery">Name</label>
+                        <input type="text" id="nameQuery" name="nameQuery" 
+                               th:value="${nameQuery}" placeholder="e.g. Martin or Martin Brown">
+                    </div>
+                    <div class="search-field">
+                        <label for="companyQuery">Company</label>
+                        <input type="text" id="companyQuery" name="companyQuery" 
+                               th:value="${companyQuery}" placeholder="Type company name..."
+                               autocomplete="off">
+                        <div id="companySuggestions" class="suggestions-dropdown"></div>
+                    </div>
+                    <button type="submit" class="search-btn">Search</button>
+                    <a th:href="@{/clients}" class="clear-btn">Clear</a>
+                </div>
+                <input type="hidden" name="statusIds" th:each="sid : ${selectedStatusIds}" th:value="${sid}">
+            </form>
+        </div>
+
         <div class="filter-block">
             <h3>Filter by Status</h3>
             <form th:action="@{/clients}" method="get">
+                <input type="hidden" name="nameQuery" th:value="${nameQuery}" th:if="${nameQuery != null && !nameQuery.isBlank()}">
+                <input type="hidden" name="companyQuery" th:value="${companyQuery}" th:if="${companyQuery != null && !companyQuery.isBlank()}">
                 <div class="status-checkboxes">
                     <label th:each="s : ${statuses}" class="status-checkbox">
                         <input type="checkbox" name="statusIds" th:value="${s.id}"
@@ -54,15 +79,58 @@
         </table>
 
         <div class="pagination" th:if="${totalPages > 1}">
-            <a th:if="${currentPage > 0}" th:href="@{/clients(page=${currentPage - 1}, size=30, statusIds=${selectedStatusIds})}">← Previous</a>
+            <a th:if="${currentPage > 0}" th:href="@{/clients(page=${currentPage - 1}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery})}">← Previous</a>
             <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                <a th:href="@{/clients(page=${i}, size=30, statusIds=${selectedStatusIds})}" 
+                <a th:href="@{/clients(page=${i}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery})}" 
                    th:text="${i + 1}" 
                    th:class="${i == currentPage} ? 'active' : ''">1</a>
             </span>
-            <a th:if="${currentPage < totalPages - 1}" th:href="@{/clients(page=${currentPage + 1}, size=30, statusIds=${selectedStatusIds})}">Next →</a>
+            <a th:if="${currentPage < totalPages - 1}" th:href="@{/clients(page=${currentPage + 1}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery})}">Next →</a>
         </div>
     </main>
     <footer th:replace="~{layout :: footer}"></footer>
+
+    <script>
+        const companyInput = document.getElementById('companyQuery');
+        const suggestionsDiv = document.getElementById('companySuggestions');
+        
+        if (companyInput) {
+            companyInput.addEventListener('input', function() {
+                const val = this.value.trim();
+                if (val.length < 1) {
+                    suggestionsDiv.classList.remove('open');
+                    suggestionsDiv.innerHTML = '';
+                    return;
+                }
+                fetch('/api/companies/search?q=' + encodeURIComponent(val))
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        suggestionsDiv.innerHTML = '';
+                        if (data.length === 0) {
+                            suggestionsDiv.classList.remove('open');
+                            return;
+                        }
+                        data.forEach(function(company) {
+                            const div = document.createElement('div');
+                            div.className = 'suggestion-item';
+                            div.textContent = company.name;
+                            div.addEventListener('click', function() {
+                                companyInput.value = company.name;
+                                suggestionsDiv.classList.remove('open');
+                                suggestionsDiv.innerHTML = '';
+                            });
+                            suggestionsDiv.appendChild(div);
+                        });
+                        suggestionsDiv.classList.add('open');
+                    });
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!companyInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.classList.remove('open');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

@@ -221,9 +221,15 @@ public class ClientService {
         client.setRegion(region);
 
         if (registrationDate != null && !registrationDate.isEmpty()) {
+            if (!clientDatesValidator.isValid(registrationDate)) {
+                throw new RuntimeException("Field 'registrationDate': " + clientDatesValidator.getErrorMessage());
+            }
             client.setRegistrationDate(LocalDate.parse(registrationDate));
         }
         if (lastActivityDate != null && !lastActivityDate.isEmpty()) {
+            if (!clientDatesValidator.isValid(lastActivityDate)) {
+                throw new RuntimeException("Field 'lastActivityDate': " + clientDatesValidator.getErrorMessage());
+            }
             client.setLastActivityDate(LocalDate.parse(lastActivityDate));
         }
         if (source != null && !source.isEmpty()) {
