@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
-public class ActivityDateValidationStrategy implements ValidationStrategy {
+public class ClientDatesValidationStrategy implements ValidationStrategy {
     private static final LocalDate MIN_DATE = LocalDate.of(2015, 1, 1);
 
     @Override
