@@ -7,85 +7,105 @@
         <div th:replace="~{layout :: messages}"></div>
         <h1>Clients</h1>
 
-        <div class="search-block">
-            <h3>Search</h3>
-            <form th:action="@{/clients}" method="get" id="searchForm">
-                <div class="search-row">
-                    <div class="search-field">
-                        <label for="nameQuery">Name</label>
-                        <input type="text" id="nameQuery" name="nameQuery" 
-                               th:value="${nameQuery}" placeholder="e.g. Martin or Martin Brown">
+        <div class="clients-layout">
+            <div class="sidebar">
+                <div class="search-block">
+                    <h3>Search</h3>
+                    <div class="search-row">
+                        <form th:action="@{/clients}" method="get" class="search-form">
+                            <div class="search-field">
+                                <label for="nameQuery">Name</label>
+                                <input type="text" id="nameQuery" name="nameQuery" 
+                                       th:value="${nameQuery}" placeholder="e.g. Martin Brown">
+                            </div>
+                            <input type="hidden" name="searchType" value="name">
+                            <input type="hidden" name="statusIds" th:each="sid : ${selectedStatusIds}" th:value="${sid}">
+                            <button type="submit" class="search-btn" title="Search by Name">
+                                <span class="search-icon">&#128269;</span>
+                            </button>
+                        </form>
+                        
+                        <form th:action="@{/clients}" method="get" class="search-form">
+                            <div class="search-field">
+                                <label for="companyQuery">Company</label>
+                                <input type="text" id="companyQuery" name="companyQuery" 
+                                       th:value="${companyQuery}" placeholder="Type company name..."
+                                       autocomplete="off">
+                                <div id="companySuggestions" class="suggestions-dropdown"></div>
+                            </div>
+                            <input type="hidden" name="searchType" value="company">
+                            <input type="hidden" name="statusIds" th:each="sid : ${selectedStatusIds}" th:value="${sid}">
+                            <button type="submit" class="search-btn" title="Search by Company">
+                                <span class="search-icon">&#128269;</span>
+                            </button>
+                        </form>
+                        
+                        <a th:href="@{/clients}" class="clear-btn">Clear All</a>
                     </div>
-                    <div class="search-field">
-                        <label for="companyQuery">Company</label>
-                        <input type="text" id="companyQuery" name="companyQuery" 
-                               th:value="${companyQuery}" placeholder="Type company name..."
-                               autocomplete="off">
-                        <div id="companySuggestions" class="suggestions-dropdown"></div>
-                    </div>
-                    <button type="submit" class="search-btn">Search</button>
-                    <a th:href="@{/clients}" class="clear-btn">Clear</a>
                 </div>
-                <input type="hidden" name="statusIds" th:each="sid : ${selectedStatusIds}" th:value="${sid}">
-            </form>
-        </div>
 
-        <div class="filter-block">
-            <h3>Filter by Status</h3>
-            <form th:action="@{/clients}" method="get">
-                <input type="hidden" name="nameQuery" th:value="${nameQuery}" th:if="${nameQuery != null && !nameQuery.isBlank()}">
-                <input type="hidden" name="companyQuery" th:value="${companyQuery}" th:if="${companyQuery != null && !companyQuery.isBlank()}">
-                <div class="status-checkboxes">
-                    <label th:each="s : ${statuses}" class="status-checkbox">
-                        <input type="checkbox" name="statusIds" th:value="${s.id}"
-                               th:checked="${#lists.contains(selectedStatusIds, s.id)}">
-                        <span class="status-badge" th:text="${s.name}" 
-                              th:style="'background-color: ' + ${s.color} + '; color: white;'">Status</span>
-                    </label>
+                <div class="filter-block">
+                    <h3>Filter by Status</h3>
+                    <form th:action="@{/clients}" method="get">
+                        <input type="hidden" name="nameQuery" th:value="${nameQuery}" th:if="${nameQuery != null && !nameQuery.isBlank()}">
+                        <input type="hidden" name="companyQuery" th:value="${companyQuery}" th:if="${companyQuery != null && !companyQuery.isBlank()}">
+                        <input type="hidden" name="searchType" th:value="${searchType}" th:if="${searchType != null && !searchType.isBlank()}">
+                        <div class="status-checkboxes">
+                            <label th:each="s : ${statuses}" class="status-checkbox">
+                                <input type="checkbox" name="statusIds" th:value="${s.id}"
+                                       th:checked="${#lists.contains(selectedStatusIds, s.id)}">
+                                <span class="status-badge" th:text="${s.name}" 
+                                      th:style="'background-color: ' + ${s.color} + '; color: white;'">Status</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="filter-btn">Filter</button>
+                        <a th:href="@{/clients}" class="clear-btn">Clear</a>
+                    </form>
                 </div>
-                <button type="submit" class="filter-btn">Filter</button>
-                <a th:href="@{/clients}" class="clear-btn">Clear</a>
-            </form>
-        </div>
+            </div>
 
-        <p class="results-count" th:text="'Total clients: ' + ${resultsCount}">Total clients: 0</p>
+            <div class="main-content">
+                <p class="results-count" th:text="'Total clients: ' + ${resultsCount}">Total clients: 0</p>
 
-        <div th:if="${filterMessage}" class="alert info" th:text="${filterMessage}"></div>
+                <div th:if="${filterMessage}" class="alert info" th:text="${filterMessage}"></div>
+                <div th:if="${searchMessage}" class="alert info" th:text="${searchMessage}"></div>
 
-        <p th:if="${#lists.isEmpty(clients)}">No clients found.</p>
+                <p th:if="${#lists.isEmpty(clients)}">No clients found.</p>
 
-        <table th:if="${!#lists.isEmpty(clients)}">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Company</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="client : ${clients}" th:onclick="|window.location='@{/clients/{id}(id=${client.id})}'|" style="cursor: pointer;">
-                    <td th:text="${client.firstName} + ' ' + ${client.lastName}">John Doe</td>
-                    <td th:text="${client.phone != null} ? ${client.phone} : '—'">+1234567890</td>
-                    <td th:text="${client.company != null} ? ${client.company.name} : '—'">Acme Corp</td>
-                    <td>
-                        <span th:if="${client.status != null}"
-                              th:text="${client.status.name}"
-                              th:style="'color: ' + ${client.status.color} + '; font-weight: 600;'">Active</span>
-                        <span th:if="${client.status == null}">No status</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <table th:if="${!#lists.isEmpty(clients)}">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="client : ${clients}" th:onclick="|window.location='@{/clients/{id}(id=${client.id})}'|" style="cursor: pointer;">
+                            <td th:text="${client.firstName} + ' ' + ${client.lastName}">John Doe</td>
+                            <td th:text="${client.phone != null} ? ${client.phone} : '—'">+1234567890</td>
+                            <td th:text="${client.company != null} ? ${client.company.name} : '—'">Acme Corp</td>
+                            <td>
+                                <span th:if="${client.status != null}"
+                                      th:text="${client.status.name}"
+                                      th:style="'color: ' + ${client.status.color} + '; font-weight: 600;'">Active</span>
+                                <span th:if="${client.status == null}">No status</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-        <div class="pagination" th:if="${totalPages > 1}">
-            <a th:if="${currentPage > 0}" th:href="@{/clients(page=${currentPage - 1}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery})}">← Previous</a>
-            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                <a th:href="@{/clients(page=${i}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery})}" 
-                   th:text="${i + 1}" 
-                   th:class="${i == currentPage} ? 'active' : ''">1</a>
-            </span>
-            <a th:if="${currentPage < totalPages - 1}" th:href="@{/clients(page=${currentPage + 1}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery})}">Next →</a>
+                <div class="pagination" th:if="${totalPages > 1}">
+                    <a th:if="${currentPage > 0}" th:href="@{/clients(page=${currentPage - 1}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}">← Previous</a>
+                    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                        <a th:href="@{/clients(page=${i}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}" 
+                           th:text="${i + 1}" 
+                           th:class="${i == currentPage} ? 'active' : ''">1</a>
+                    </span>
+                    <a th:if="${currentPage < totalPages - 1}" th:href="@{/clients(page=${currentPage + 1}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}">Next →</a>
+                </div>
+            </div>
         </div>
     </main>
     <footer th:replace="~{layout :: footer}"></footer>

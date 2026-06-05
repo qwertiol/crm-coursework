@@ -6,14 +6,16 @@ public class SearchRequest {
     private String nameQuery;
     private String companyQuery;
     private List<Long> statusIds;
+    private String searchType;
 
     public SearchRequest() {
     }
 
-    public SearchRequest(String nameQuery, String companyQuery, List<Long> statusIds) {
+    public SearchRequest(String nameQuery, String companyQuery, List<Long> statusIds, String searchType) {
         this.nameQuery = nameQuery;
         this.companyQuery = companyQuery;
         this.statusIds = statusIds;
+        this.searchType = searchType;
     }
 
     public String getNameQuery() {
@@ -38,5 +40,13 @@ public class SearchRequest {
 
     public void setStatusIds(List<Long> statusIds) {
         this.statusIds = statusIds;
+    }
+
+    public String getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(String searchType) {
+        this.searchType = searchType;
     }
 }

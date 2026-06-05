@@ -47,6 +47,7 @@ public class ClientController {
             @RequestParam(required = false) List<Long> statusIds,
             @RequestParam(required = false) String nameQuery,
             @RequestParam(required = false) String companyQuery,
+            @RequestParam(required = false) String searchType,
             Model model) {
 
         PageRequest pageable = PageRequest.of(page, size, Sort.by("lastName").ascending());
@@ -55,17 +56,16 @@ public class ClientController {
         request.setNameQuery(nameQuery);
         request.setCompanyQuery(companyQuery);
         request.setStatusIds(statusIds);
+        request.setSearchType(searchType);
 
-        CombinedSearchHandler combined = new CombinedSearchHandler(clientRepository, companyRepository);
         NameSearchHandler nameHandler = new NameSearchHandler(clientRepository);
         CompanySearchHandler companyHandler = new CompanySearchHandler(clientRepository, companyRepository);
         NoCriteriaSearchHandler noCriteria = new NoCriteriaSearchHandler(clientRepository);
 
-        combined.setNext(nameHandler);
         nameHandler.setNext(companyHandler);
         companyHandler.setNext(noCriteria);
 
-        Page<Client> clientPage = combined.handle(request, pageable);
+        Page<Client> clientPage = nameHandler.handle(request, pageable);
 
         model.addAttribute("clients", clientPage.getContent());
         model.addAttribute("currentPage", page);
@@ -76,9 +76,18 @@ public class ClientController {
         model.addAttribute("resultsCount", clientPage.getTotalElements());
         model.addAttribute("nameQuery", nameQuery);
         model.addAttribute("companyQuery", companyQuery);
+        model.addAttribute("searchType", searchType);
 
         if (statusIds != null && !statusIds.isEmpty()) {
             model.addAttribute("filterMessage", "Showing " + clientPage.getTotalElements() + " clients filtered by selected statuses");
+        }
+
+        if ("name".equals(searchType) && nameQuery != null && !nameQuery.isBlank()) {
+            model.addAttribute("searchMessage", "Found " + clientPage.getTotalElements() + " clients matching name \"" + nameQuery.trim() + "\"");
+        }
+
+        if ("company".equals(searchType) && companyQuery != null && !companyQuery.isBlank()) {
+            model.addAttribute("searchMessage", "Found " + clientPage.getTotalElements() + " clients matching company \"" + companyQuery.trim() + "\"");
         }
 
         return "clients";

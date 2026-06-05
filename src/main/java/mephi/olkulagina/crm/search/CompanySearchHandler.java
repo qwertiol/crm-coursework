@@ -24,7 +24,9 @@ public class CompanySearchHandler extends AbstractSearchHandler {
 
     @Override
     protected boolean canHandle(SearchRequest request) {
-        return request.getCompanyQuery() != null && !request.getCompanyQuery().isBlank();
+        return "company".equals(request.getSearchType())
+                && request.getCompanyQuery() != null
+                && !request.getCompanyQuery().isBlank();
     }
 
     @Override

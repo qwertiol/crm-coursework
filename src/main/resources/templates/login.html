@@ -4,20 +4,22 @@
 <body>
     <nav th:replace="~{layout :: nav}"></nav>
     <main>
-        <div th:replace="~{layout :: messages}"></div>
-        <div th:if="${param.error}" class="alert error">Invalid username or password.</div>
-        <div th:if="${param.logout}" class="alert success">You have been logged out successfully.</div>
-        <h1>Login</h1>
-        <form th:action="@{/login}" method="post">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
-            
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-            
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a th:href="@{/register}">Register</a></p>
+        <div class="auth-container">
+            <div th:replace="~{layout :: messages}"></div>
+            <div th:if="${param.error}" class="alert error">Invalid username or password.</div>
+            <div th:if="${param.logout}" class="alert success">You have been logged out successfully.</div>
+            <h1>Login</h1>
+            <form th:action="@{/login}" method="post">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a th:href="@{/register}">Register</a></p>
+        </div>
     </main>
     <footer th:replace="~{layout :: footer}"></footer>
 </body>

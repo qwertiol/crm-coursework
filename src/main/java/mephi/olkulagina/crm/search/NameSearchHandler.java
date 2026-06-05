@@ -21,7 +21,9 @@ public class NameSearchHandler extends AbstractSearchHandler {
 
     @Override
     protected boolean canHandle(SearchRequest request) {
-        return request.getNameQuery() != null && !request.getNameQuery().isBlank();
+        return "name".equals(request.getSearchType())
+                && request.getNameQuery() != null
+                && !request.getNameQuery().isBlank();
     }
 
     @Override
