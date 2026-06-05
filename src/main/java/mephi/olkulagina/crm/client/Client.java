@@ -27,8 +27,21 @@ public class Client {
 
     private String email;
 
+    private String position;
+
+    private String department;
+
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private ClientLevel clientLevel;
+
+    @Column(length = 500)
+    private String specialConditions;
+
+    @Column(name = "registration_date")
+    private LocalDate registrationDate;
+
+    @Column(name = "last_activity_date")
+    private LocalDate lastActivityDate;
 
     @Enumerated(EnumType.STRING)
     private ClientSource source;
@@ -41,18 +54,6 @@ public class Client {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
-
-    @Column(name = "loyalty_card_number")
-    private String loyaltyCardNumber;
-
-    @Column(name = "registration_date")
-    private LocalDate registrationDate;
-
-    @Column(name = "last_activity_date")
-    private LocalDate lastActivityDate;
-
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
@@ -60,143 +61,74 @@ public class Client {
     public Client() {
     }
 
-    public Client(Long id, String lastName, String firstName, String middleName, String phone, String email,
-                  Gender gender, ClientSource source, Region region, Company company, LocalDate birthDate,
-                  String loyaltyCardNumber, LocalDate registrationDate, LocalDate lastActivityDate, Status status) {
+    public Client(Long id, String lastName, String firstName, String middleName, String phone,
+                  String email, String position, String department, ClientLevel clientLevel,
+                  String specialConditions, LocalDate registrationDate, LocalDate lastActivityDate,
+                  ClientSource source, Region region, Company company, Status status) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.middleName = middleName;
         this.phone = phone;
         this.email = email;
-        this.gender = gender;
+        this.position = position;
+        this.department = department;
+        this.clientLevel = clientLevel;
+        this.specialConditions = specialConditions;
+        this.registrationDate = registrationDate;
+        this.lastActivityDate = lastActivityDate;
         this.source = source;
         this.region = region;
         this.company = company;
-        this.birthDate = birthDate;
-        this.loyaltyCardNumber = loyaltyCardNumber;
-        this.registrationDate = registrationDate;
-        this.lastActivityDate = lastActivityDate;
         this.status = status;
     }
 
-    public Long getId() {
-        return id;
-    }
+    // Getters and setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public String getLastName() {
-        return lastName;
-    }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public String getMiddleName() { return middleName; }
+    public void setMiddleName(String middleName) { this.middleName = middleName; }
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getMiddleName() {
-        return middleName;
-    }
+    public String getPosition() { return position; }
+    public void setPosition(String position) { this.position = position; }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
+    public String getDepartment() { return department; }
+    public void setDepartment(String department) { this.department = department; }
 
-    public String getPhone() {
-        return phone;
-    }
+    public ClientLevel getClientLevel() { return clientLevel; }
+    public void setClientLevel(ClientLevel clientLevel) { this.clientLevel = clientLevel; }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    public String getSpecialConditions() { return specialConditions; }
+    public void setSpecialConditions(String specialConditions) { this.specialConditions = specialConditions; }
 
-    public String getEmail() {
-        return email;
-    }
+    public LocalDate getRegistrationDate() { return registrationDate; }
+    public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate = registrationDate; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public LocalDate getLastActivityDate() { return lastActivityDate; }
+    public void setLastActivityDate(LocalDate lastActivityDate) { this.lastActivityDate = lastActivityDate; }
 
-    public Gender getGender() {
-        return gender;
-    }
+    public ClientSource getSource() { return source; }
+    public void setSource(ClientSource source) { this.source = source; }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
+    public Region getRegion() { return region; }
+    public void setRegion(Region region) { this.region = region; }
 
-    public ClientSource getSource() {
-        return source;
-    }
+    public Company getCompany() { return company; }
+    public void setCompany(Company company) { this.company = company; }
 
-    public void setSource(ClientSource source) {
-        this.source = source;
-    }
-
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getLoyaltyCardNumber() {
-        return loyaltyCardNumber;
-    }
-
-    public void setLoyaltyCardNumber(String loyaltyCardNumber) {
-        this.loyaltyCardNumber = loyaltyCardNumber;
-    }
-
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public LocalDate getLastActivityDate() {
-        return lastActivityDate;
-    }
-
-    public void setLastActivityDate(LocalDate lastActivityDate) {
-        this.lastActivityDate = lastActivityDate;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
 }

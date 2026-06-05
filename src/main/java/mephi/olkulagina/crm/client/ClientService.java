@@ -1,12 +1,11 @@
 package mephi.olkulagina.crm.client;
 
 import mephi.olkulagina.crm.company.Company;
-import mephi.olkulagina.crm.company.CompanyService;
+import mephi.olkulagina.crm.company.CompanyRepository;
 import mephi.olkulagina.crm.region.Region;
-import mephi.olkulagina.crm.region.RegionService;
+import mephi.olkulagina.crm.region.RegionRepository;
 import mephi.olkulagina.crm.status.Status;
 import mephi.olkulagina.crm.status.StatusRepository;
-import mephi.olkulagina.crm.validation.BirthDateValidationStrategy;
 import mephi.olkulagina.crm.validation.ClientDatesValidationStrategy;
 import mephi.olkulagina.crm.validation.EmailValidationStrategy;
 import mephi.olkulagina.crm.validation.PhoneValidationStrategy;
@@ -24,22 +23,20 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
     private final StatusRepository statusRepository;
-    private final RegionService regionService;
-    private final CompanyService companyService;
+    private final CompanyRepository companyRepository;
+    private final RegionRepository regionRepository;
     private final EmailValidationStrategy emailValidator;
     private final PhoneValidationStrategy phoneValidator;
-    private final BirthDateValidationStrategy birthDateValidator;
     private final ClientDatesValidationStrategy clientDatesValidator;
 
     public ClientService(ClientRepository clientRepository, StatusRepository statusRepository,
-                         RegionService regionService, CompanyService companyService) {
+                         CompanyRepository companyRepository, RegionRepository regionRepository) {
         this.clientRepository = clientRepository;
         this.statusRepository = statusRepository;
-        this.regionService = regionService;
-        this.companyService = companyService;
+        this.companyRepository = companyRepository;
+        this.regionRepository = regionRepository;
         this.emailValidator = new EmailValidationStrategy();
         this.phoneValidator = new PhoneValidationStrategy();
-        this.birthDateValidator = new BirthDateValidationStrategy();
         this.clientDatesValidator = new ClientDatesValidationStrategy();
     }
 
@@ -97,21 +94,29 @@ public class ClientService {
     }
 
     @Transactional(readOnly = true)
-    public List<Client> findByGender(Gender gender) {
-        return clientRepository.findByGender(gender);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Client> findBySource(ClientSource source) {
-        return clientRepository.findBySource(source);
-    }
-
-    @Transactional(readOnly = true)
     public List<Client> findByStatusId(Long statusId) {
         return clientRepository.findByStatusId(statusId);
     }
 
-    public List<String> validateClientData(String email, String phone, String birthDate, String registrationDate, String lastActivityDate) {
+    public Company findOrCreateCompany(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return null;
+        }
+        String trimmed = name.trim();
+        return companyRepository.findByName(trimmed)
+                .orElseGet(() -> companyRepository.save(new Company(null, trimmed)));
+    }
+
+    public Region findOrCreateRegion(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return null;
+        }
+        String trimmed = name.trim();
+        return regionRepository.findByName(trimmed)
+                .orElseGet(() -> regionRepository.save(new Region(null, trimmed)));
+    }
+
+    public List<String> validateClientData(String email, String phone) {
         List<String> errors = new ArrayList<>();
 
         if (email != null && !email.isEmpty()) {
@@ -126,31 +131,14 @@ public class ClientService {
             }
         }
 
-        if (birthDate != null && !birthDate.isEmpty()) {
-            if (!birthDateValidator.isValid(birthDate)) {
-                errors.add("Field 'birthDate': " + birthDateValidator.getErrorMessage());
-            }
-        }
-
-        if (registrationDate != null && !registrationDate.isEmpty()) {
-            if (!clientDatesValidator.isValid(registrationDate)) {
-                errors.add("Field 'registrationDate': " + clientDatesValidator.getErrorMessage());
-            }
-        }
-
-        if (lastActivityDate != null && !lastActivityDate.isEmpty()) {
-            if (!clientDatesValidator.isValid(lastActivityDate)) {
-                errors.add("Field 'lastActivityDate': " + clientDatesValidator.getErrorMessage());
-            }
-        }
-
         return errors;
     }
 
     public Client updateClient(Long id, String lastName, String firstName, String middleName,
-                               String phone, String email, String gender, Long regionId, Long companyId,
-                               String birthDate, String loyaltyCardNumber, String registrationDate,
-                               String lastActivityDate, String source, Long statusId) {
+                               String phone, String email, String position, String department,
+                               String clientLevel, String specialConditions, String companyName,
+                               String regionName, String registrationDate, String lastActivityDate,
+                               String source, Long statusId) {
         if (lastName == null || lastName.isEmpty()) {
             throw new RuntimeException("Last name is required");
         }
@@ -158,7 +146,7 @@ public class ClientService {
             throw new RuntimeException("First name is required");
         }
 
-        List<String> errors = validateClientData(email, phone, birthDate, registrationDate, lastActivityDate);
+        List<String> errors = validateClientData(email, phone);
         if (!errors.isEmpty()) {
             throw new RuntimeException(String.join(", ", errors));
         }
@@ -177,25 +165,25 @@ public class ClientService {
         if (email != null) {
             client.setEmail(email);
         }
-        if (gender != null && !gender.isEmpty()) {
-            client.setGender(Gender.valueOf(gender));
+        if (position != null) {
+            client.setPosition(position);
         }
-        if (regionId != null) {
-            Region region = regionService.findById(regionId)
-                    .orElseThrow(() -> new RuntimeException("Region not found"));
-            client.setRegion(region);
+        if (department != null) {
+            client.setDepartment(department);
         }
-        if (companyId != null) {
-            Company company = companyService.findById(companyId)
-                    .orElseThrow(() -> new RuntimeException("Company not found"));
-            client.setCompany(company);
+        if (clientLevel != null && !clientLevel.isEmpty()) {
+            client.setClientLevel(ClientLevel.valueOf(clientLevel));
         }
-        if (birthDate != null && !birthDate.isEmpty()) {
-            client.setBirthDate(LocalDate.parse(birthDate));
+        if (specialConditions != null) {
+            client.setSpecialConditions(specialConditions);
         }
-        if (loyaltyCardNumber != null) {
-            client.setLoyaltyCardNumber(loyaltyCardNumber);
-        }
+
+        Company company = findOrCreateCompany(companyName);
+        client.setCompany(company);
+
+        Region region = findOrCreateRegion(regionName);
+        client.setRegion(region);
+
         if (registrationDate != null && !registrationDate.isEmpty()) {
             client.setRegistrationDate(LocalDate.parse(registrationDate));
         }

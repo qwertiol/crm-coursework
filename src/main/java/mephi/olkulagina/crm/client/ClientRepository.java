@@ -20,9 +20,5 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     List<Client> findByCompanyId(Long companyId);
 
-    List<Client> findByGender(Gender gender);
-
-    List<Client> findBySource(ClientSource source);
-
     List<Client> findByStatusId(Long statusId);
 }

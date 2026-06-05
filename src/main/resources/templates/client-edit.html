@@ -18,36 +18,35 @@
             <input type="text" id="middleName" name="middleName" th:value="${client.middleName}">
 
             <label for="phone">Phone</label>
-            <input type="text" id="phone" name="phone" th:value="${client.phone}" placeholder="+7 (XXX) XXX-XX-XX">
+            <input type="text" id="phone" name="phone" th:value="${client.phone}" placeholder="+1 (XXX) XXX-XXXX">
 
             <label for="email">Email</label>
             <input type="email" id="email" name="email" th:value="${client.email}">
 
-            <label for="companyId">Company</label>
-            <select id="companyId" name="companyId">
-                <option value="">— Select Company —</option>
-                <option th:each="c : ${companies}"
-                        th:value="${c.id}"
-                        th:text="${c.name}"
-                        th:selected="${client.company != null and c.id == client.company.id}"></option>
+            <label for="position">Position</label>
+            <input type="text" id="position" name="position" th:value="${client.position}">
+
+            <label for="department">Department</label>
+            <input type="text" id="department" name="department" th:value="${client.department}">
+
+            <label for="companyName">Company</label>
+            <input type="text" id="companyName" name="companyName" th:value="${client.company != null} ? ${client.company.name} : ''" placeholder="Type company name...">
+
+            <label for="regionName">Region</label>
+            <input type="text" id="regionName" name="regionName" th:value="${client.region != null} ? ${client.region.name} : ''" placeholder="Type region name...">
+
+            <label for="clientLevel">Client Level</label>
+            <select id="clientLevel" name="clientLevel">
+                <option value="">— Select Level —</option>
+                <option value="BRONZE" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'BRONZE'}">Bronze</option>
+                <option value="SILVER" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'SILVER'}">Silver</option>
+                <option value="GOLD" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'GOLD'}">Gold</option>
+                <option value="PLATINUM" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'PLATINUM'}">Platinum</option>
+                <option value="VIP" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'VIP'}">Vip</option>
             </select>
 
-            <label for="regionId">Region</label>
-            <select id="regionId" name="regionId">
-                <option value="">— Select Region —</option>
-                <option th:each="r : ${regions}"
-                        th:value="${r.id}"
-                        th:text="${r.name}"
-                        th:selected="${client.region != null and r.id == client.region.id}"></option>
-            </select>
-
-            <label for="gender">Gender</label>
-            <select id="gender" name="gender">
-                <option value="">— Select Gender —</option>
-                <option value="MALE" th:selected="${client.gender != null and client.gender.name() == 'MALE'}">Male</option>
-                <option value="FEMALE" th:selected="${client.gender != null and client.gender.name() == 'FEMALE'}">Female</option>
-                <option value="NOT_SPECIFIED" th:selected="${client.gender != null and client.gender.name() == 'NOT_SPECIFIED'}">Not specified</option>
-            </select>
+            <label for="specialConditions">Special Conditions</label>
+            <input type="text" id="specialConditions" name="specialConditions" th:value="${client.specialConditions}">
 
             <label for="source">Source</label>
             <select id="source" name="source">
@@ -59,12 +58,6 @@
                 <option value="PARTNER" th:selected="${client.source != null and client.source.name() == 'PARTNER'}">Partner</option>
                 <option value="OTHER" th:selected="${client.source != null and client.source.name() == 'OTHER'}">Other</option>
             </select>
-
-            <label for="birthDate">Birth Date</label>
-            <input type="date" id="birthDate" name="birthDate" th:value="${client.birthDate != null} ? ${client.birthDate} : ''">
-
-            <label for="loyaltyCardNumber">Loyalty Card Number</label>
-            <input type="text" id="loyaltyCardNumber" name="loyaltyCardNumber" th:value="${client.loyaltyCardNumber}">
 
             <label for="registrationDate">Registration Date</label>
             <input type="date" id="registrationDate" name="registrationDate" th:value="${client.registrationDate != null} ? ${client.registrationDate} : ''">

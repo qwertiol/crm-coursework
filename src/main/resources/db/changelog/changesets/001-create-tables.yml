@@ -69,16 +69,59 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: full_name
+                  name: last_name
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
+                  name: first_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: middle_name
+                  type: varchar(255)
+              - column:
                   name: phone
                   type: varchar(50)
               - column:
-                  name: company
+                  name: email
                   type: varchar(255)
+              - column:
+                  name: position
+                  type: varchar(255)
+              - column:
+                  name: department
+                  type: varchar(255)
+              - column:
+                  name: client_level
+                  type: varchar(20)
+              - column:
+                  name: special_conditions
+                  type: varchar(500)
+              - column:
+                  name: registration_date
+                  type: date
+              - column:
+                  name: last_activity_date
+                  type: date
+              - column:
+                  name: source
+                  type: varchar(50)
+              - column:
+                  name: region_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_client_region
+                    references: region(id)
+              - column:
+                  name: company_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_client_company
+                    references: company(id)
               - column:
                   name: status_id
                   type: bigint

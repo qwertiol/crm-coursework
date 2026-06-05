@@ -67,19 +67,20 @@ public class ClientController {
             @RequestParam(required = false) String middleName,
             @RequestParam(required = false) String phone,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String gender,
-            @RequestParam(required = false) Long regionId,
-            @RequestParam(required = false) Long companyId,
-            @RequestParam(required = false) String birthDate,
-            @RequestParam(required = false) String loyaltyCardNumber,
+            @RequestParam(required = false) String position,
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) String clientLevel,
+            @RequestParam(required = false) String specialConditions,
+            @RequestParam(required = false) String companyName,
+            @RequestParam(required = false) String regionName,
             @RequestParam(required = false) String registrationDate,
             @RequestParam(required = false) String lastActivityDate,
             @RequestParam(required = false) String source,
             RedirectAttributes redirectAttributes) {
         try {
             clientService.updateClient(id, lastName, firstName, middleName, phone, email,
-                    gender, regionId, companyId, birthDate, loyaltyCardNumber,
-                    registrationDate, lastActivityDate, source, null);
+                    position, department, clientLevel, specialConditions, companyName,
+                    regionName, registrationDate, lastActivityDate, source, null);
             redirectAttributes.addFlashAttribute("successMessage", "Changes saved successfully");
             return "redirect:/clients/" + id;
         } catch (RuntimeException e) {
