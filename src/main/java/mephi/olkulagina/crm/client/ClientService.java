@@ -9,13 +9,18 @@ import mephi.olkulagina.crm.status.StatusRepository;
 import mephi.olkulagina.crm.validation.ClientDatesValidationStrategy;
 import mephi.olkulagina.crm.validation.EmailValidationStrategy;
 import mephi.olkulagina.crm.validation.PhoneValidationStrategy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -96,6 +101,37 @@ public class ClientService {
     @Transactional(readOnly = true)
     public List<Client> findByStatusId(Long statusId) {
         return clientRepository.findByStatusId(statusId);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Client> findClients(List<Long> statusIds, Pageable pageable) {
+        List<Client> allClients;
+        if (statusIds == null || statusIds.isEmpty()) {
+            allClients = clientRepository.findAll();
+        } else {
+            allClients = clientRepository.findByStatusIdIn(statusIds);
+        }
+
+        int total = allClients.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), total);
+
+        List<Client> pageContent;
+        if (start > total) {
+            pageContent = Collections.emptyList();
+        } else {
+            pageContent = allClients.subList(start, end);
+        }
+
+        return new PageImpl<>(pageContent, pageable, total);
+    }
+
+    @Transactional(readOnly = true)
+    public long countClients(List<Long> statusIds) {
+        if (statusIds == null || statusIds.isEmpty()) {
+            return clientRepository.count();
+        }
+        return clientRepository.findByStatusIdIn(statusIds).size();
     }
 
     public Company findOrCreateCompany(String name) {

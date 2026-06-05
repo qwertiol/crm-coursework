@@ -21,4 +21,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     List<Client> findByCompanyId(Long companyId);
 
     List<Client> findByStatusId(Long statusId);
+
+    List<Client> findByStatusIdIn(List<Long> statusIds);
 }

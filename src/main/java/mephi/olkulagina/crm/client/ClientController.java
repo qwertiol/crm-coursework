@@ -3,6 +3,9 @@ package mephi.olkulagina.crm.client;
 import mephi.olkulagina.crm.company.CompanyService;
 import mephi.olkulagina.crm.region.RegionService;
 import mephi.olkulagina.crm.status.StatusService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -30,11 +34,27 @@ public class ClientController {
     }
 
     @GetMapping("/clients")
-    public String listClients(Model model) {
-        List<Client> clients = clientService.findAll();
-        model.addAttribute("clients", clients);
-        model.addAttribute("regions", regionService.findAll());
-        model.addAttribute("companies", companyService.findAll());
+    public String listClients(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size,
+            @RequestParam(required = false) List<Long> statusIds,
+            Model model) {
+
+        PageRequest pageable = PageRequest.of(page, size, Sort.by("lastName").ascending());
+        Page<Client> clientPage = clientService.findClients(statusIds, pageable);
+
+        model.addAttribute("clients", clientPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", clientPage.getTotalPages());
+        model.addAttribute("totalElements", clientPage.getTotalElements());
+        model.addAttribute("statuses", statusService.findAll());
+        model.addAttribute("selectedStatusIds", statusIds != null ? statusIds : Collections.emptyList());
+        model.addAttribute("resultsCount", clientPage.getTotalElements());
+
+        if (statusIds != null && !statusIds.isEmpty()) {
+            model.addAttribute("filterMessage", "Showing " + clientPage.getTotalElements() + " clients filtered by selected statuses");
+        }
+
         return "clients";
     }
 

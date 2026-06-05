@@ -9,8 +9,7 @@
         <div class="client-card">
             <div class="client-main">
                 <h1>
-                    <span th:text="${client.lastName} + ' ' + ${client.firstName}"></span>
-                    <span th:if="${client.middleName != null}" th:text="' ' + ${client.middleName}"></span>
+                    <span th:text="${client.firstName} + ' ' + ${client.middleName != null ? client.middleName + ' ' : ''} + ${client.lastName}"></span>
                 </h1>
 
                 <div class="info-block">

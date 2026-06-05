@@ -7,15 +7,32 @@
         <div th:replace="~{layout :: messages}"></div>
         <h1>Clients</h1>
 
-        <p class="results-count">Total clients: <span th:text="${#lists.size(clients)}"></span></p>
+        <div class="filter-block">
+            <h3>Filter by Status</h3>
+            <form th:action="@{/clients}" method="get">
+                <div class="status-checkboxes">
+                    <label th:each="s : ${statuses}" class="status-checkbox">
+                        <input type="checkbox" name="statusIds" th:value="${s.id}"
+                               th:checked="${#lists.contains(selectedStatusIds, s.id)}">
+                        <span class="status-badge" th:text="${s.name}" 
+                              th:style="'background-color: ' + ${s.color} + '; color: white;'">Status</span>
+                    </label>
+                </div>
+                <button type="submit" class="filter-btn">Filter</button>
+                <a th:href="@{/clients}" class="clear-btn">Clear</a>
+            </form>
+        </div>
+
+        <p class="results-count" th:text="'Total clients: ' + ${resultsCount}">Total clients: 0</p>
+
+        <div th:if="${filterMessage}" class="alert info" th:text="${filterMessage}"></div>
 
         <p th:if="${#lists.isEmpty(clients)}">No clients found.</p>
 
         <table th:if="${!#lists.isEmpty(clients)}">
             <thead>
                 <tr>
-                    <th>Last Name</th>
-                    <th>First Name</th>
+                    <th>Name</th>
                     <th>Phone</th>
                     <th>Company</th>
                     <th>Status</th>
@@ -23,9 +40,8 @@
             </thead>
             <tbody>
                 <tr th:each="client : ${clients}" th:onclick="|window.location='@{/clients/{id}(id=${client.id})}'|" style="cursor: pointer;">
-                    <td th:text="${client.lastName}">Doe</td>
-                    <td th:text="${client.firstName}">John</td>
-                    <td th:text="${client.phone}">+1234567890</td>
+                    <td th:text="${client.firstName} + ' ' + ${client.lastName}">John Doe</td>
+                    <td th:text="${client.phone != null} ? ${client.phone} : '—'">+1234567890</td>
                     <td th:text="${client.company != null} ? ${client.company.name} : '—'">Acme Corp</td>
                     <td>
                         <span th:if="${client.status != null}"
@@ -36,6 +52,16 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="pagination" th:if="${totalPages > 1}">
+            <a th:if="${currentPage > 0}" th:href="@{/clients(page=${currentPage - 1}, size=30, statusIds=${selectedStatusIds})}">← Previous</a>
+            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a th:href="@{/clients(page=${i}, size=30, statusIds=${selectedStatusIds})}" 
+                   th:text="${i + 1}" 
+                   th:class="${i == currentPage} ? 'active' : ''">1</a>
+            </span>
+            <a th:if="${currentPage < totalPages - 1}" th:href="@{/clients(page=${currentPage + 1}, size=30, statusIds=${selectedStatusIds})}">Next →</a>
+        </div>
     </main>
     <footer th:replace="~{layout :: footer}"></footer>
 </body>
