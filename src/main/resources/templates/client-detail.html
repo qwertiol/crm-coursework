@@ -5,6 +5,11 @@
     <nav th:replace="~{layout :: nav}"></nav>
     <main>
         <div th:replace="~{layout :: messages}"></div>
+
+        <div class="client-actions">
+            <a th:href="@{/clients/{id}/edit(id=${client.id})}" class="edit-btn">Edit Client</a>
+        </div>
+
         <div class="client-card">
             <div class="client-main">
                 <h1>
@@ -74,8 +79,6 @@
                 </div>
             </div>
             <div class="client-side">
-                <a th:href="@{/clients/{id}/edit(id=${client.id})}" class="edit-btn">Edit</a>
-
                 <div class="info-block">
                     <h3>Personal</h3>
                     <div class="info-row">
@@ -125,15 +128,48 @@
 
                 <div class="info-block">
                     <h3>Status</h3>
-                    <span class="status-badge" th:if="${client.status != null}"
-                          th:text="${client.status.name}"
-                          th:style="'background-color: ' + ${client.status.color} + '; color: white;'">Active</span>
-                    <span th:if="${client.status == null}">No status</span>
+                    <div class="status-editor" id="statusEditor">
+                        <div class="status-display" onclick="toggleStatusEdit()">
+                            <span class="status-badge" th:if="${client.status != null}"
+                                  th:text="${client.status.name}"
+                                  th:style="'background-color: ' + ${client.status.color} + '; color: white;'">Active</span>
+                            <span th:if="${client.status == null}" class="status-badge" style="background-color: #999; color: white;">No status</span>
+                            <button type="button" class="status-edit-btn" title="Change status">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="status-dropdown" id="statusDropdown">
+                            <form th:action="@{/clients/{id}/status(id=${client.id})}" method="post">
+                                <select name="statusId" required>
+                                    <option th:each="s : ${statuses}"
+                                            th:value="${s.id}"
+                                            th:text="${s.name}"
+                                            th:selected="${client.status != null and s.id == client.status.id}">
+                                    </option>
+                                </select>
+                                <button type="submit">Save</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <a th:href="@{/clients}" class="back-link">← Back to Client List</a>
     </main>
     <footer th:replace="~{layout :: footer}"></footer>
+
+    <script>
+        function toggleStatusEdit() {
+            document.getElementById('statusDropdown').classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const editor = document.getElementById('statusEditor');
+            if (!editor.contains(e.target)) {
+                document.getElementById('statusDropdown').classList.remove('open');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -321,3 +321,107 @@ footer {
 .back-link:hover {
     text-decoration: underline;
 }
+
+/* Status inline editor */
+.status-editor {
+    position: relative;
+    display: inline-block;
+}
+
+.status-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.status-edit-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.7;
+    transition: opacity 0.2s, background 0.2s;
+}
+
+.status-edit-btn:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.status-edit-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: white;
+}
+
+.status-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    min-width: 220px;
+}
+
+.status-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    transform: rotate(45deg);
+}
+
+.status-dropdown.open {
+    display: block;
+}
+
+.status-dropdown form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.status-dropdown select {
+    width: 100%;
+    padding: 0.4rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+.status-dropdown button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.status-dropdown button:hover {
+    background: #2980b9;
+}
+
+/* Client actions */
+.client-actions {
+    text-align: right;
+    margin-bottom: 1rem;
+}

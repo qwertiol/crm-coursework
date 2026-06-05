@@ -18,7 +18,7 @@
             <input type="text" id="middleName" name="middleName" th:value="${client.middleName}">
 
             <label for="phone">Phone</label>
-            <input type="text" id="phone" name="phone" th:value="${client.phone}">
+            <input type="text" id="phone" name="phone" th:value="${client.phone}" placeholder="+7 (XXX) XXX-XX-XX">
 
             <label for="email">Email</label>
             <input type="email" id="email" name="email" th:value="${client.email}">
@@ -71,14 +71,6 @@
 
             <label for="lastActivityDate">Last Activity Date</label>
             <input type="date" id="lastActivityDate" name="lastActivityDate" th:value="${client.lastActivityDate != null} ? ${client.lastActivityDate} : ''">
-
-            <label for="statusId">Status</label>
-            <select id="statusId" name="statusId" required>
-                <option th:each="s : ${statuses}"
-                        th:value="${s.id}"
-                        th:text="${s.name}"
-                        th:selected="${client.status != null and s.id == client.status.id}"></option>
-            </select>
 
             <button type="submit">Save Changes</button>
         </form>
