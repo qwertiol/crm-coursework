@@ -1,5 +1,7 @@
 package mephi.olkulagina.crm.client;
 
+import mephi.olkulagina.crm.company.CompanyService;
+import mephi.olkulagina.crm.region.RegionService;
 import mephi.olkulagina.crm.search.SearchRequest;
 import mephi.olkulagina.crm.specification.ClientSpecification;
 import mephi.olkulagina.crm.specification.SpecificationFactory;
@@ -18,6 +20,11 @@ import java.util.stream.Stream;
 @Service
 @Transactional(readOnly = true)
 public class ClientSearchService {
+
+    private static final String NAME_SEARCH_TYPE = "name";
+    private static final String COMPANY_SEARCH_TYPE = "company";
+    private static final String NAME_PARTS_DELIMITER = "\\s+";
+    private static final int NAME_PARTS_LIMIT = 2;
 
     private final ClientRepository clientRepository;
     private final SpecificationFactory specificationFactory;
@@ -46,11 +53,11 @@ public class ClientSearchService {
     private List<Client> fetchBaseResults(SearchRequest request) {
         String searchType = request.getSearchType();
 
-        if ("name".equals(searchType)) {
+        if (NAME_SEARCH_TYPE.equals(searchType)) {
             return fetchByName(request.getNameQuery());
         }
 
-        if ("company".equals(searchType)) {
+        if (COMPANY_SEARCH_TYPE.equals(searchType)) {
             return fetchByCompany(request.getCompanyQuery());
         }
 
@@ -65,7 +72,7 @@ public class ClientSearchService {
         String trimmed = query.trim().toLowerCase();
 
         if (trimmed.contains(" ")) {
-            String[] parts = trimmed.split("\\s+", 2);
+            String[] parts = trimmed.split(NAME_PARTS_DELIMITER, NAME_PARTS_LIMIT);
             return clientRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(parts[0], parts[1]);
         }
 

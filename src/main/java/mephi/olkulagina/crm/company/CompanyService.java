@@ -19,4 +19,13 @@ public class CompanyService {
     public List<Company> findAll() {
         return companyRepository.findAll();
     }
+
+    public Company findOrCreate(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return null;
+        }
+        String trimmed = name.trim();
+        return companyRepository.findByNameIgnoreCase(trimmed)
+                .orElseGet(() -> companyRepository.save(new Company(null, trimmed)));
+    }
 }

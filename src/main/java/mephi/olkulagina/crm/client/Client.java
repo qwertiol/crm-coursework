@@ -10,6 +10,11 @@ import java.time.LocalDate;
 @Table(name = "client")
 public class Client {
 
+    private static final int PHONE_LENGTH = 50;
+    private static final int SPECIAL_CONDITIONS_LENGTH = 500;
+    private static final int CLIENT_LEVEL_LENGTH = 20;
+    private static final int SOURCE_LENGTH = 50;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +27,7 @@ public class Client {
 
     private String middleName;
 
-    @Column(length = 50)
+    @Column(length = PHONE_LENGTH)
     private String phone;
 
     private String email;
@@ -34,7 +39,7 @@ public class Client {
     @Enumerated(EnumType.STRING)
     private ClientLevel clientLevel;
 
-    @Column(length = 500)
+    @Column(length = SPECIAL_CONDITIONS_LENGTH)
     private String specialConditions;
 
     @Column(name = "registration_date")
@@ -83,7 +88,6 @@ public class Client {
         this.status = status;
     }
 
-    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

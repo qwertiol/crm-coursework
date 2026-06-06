@@ -11,11 +11,11 @@ import java.util.Collections;
 
 @Service
 @Transactional(readOnly = true)
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class DatabaseUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    public DatabaseUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -21,6 +21,9 @@ import java.util.List;
 @Controller
 public class ClientController {
 
+    private static final int DEFAULT_PAGE_SIZE = 30;
+    private static final String DEFAULT_SORT_FIELD = "lastName";
+
     private final ClientService clientService;
     private final ClientSearchService clientSearchService;
     private final StatusService statusService;
@@ -49,7 +52,7 @@ public class ClientController {
             @RequestParam(required = false) String searchType,
             Model model) {
 
-        PageRequest pageable = PageRequest.of(page, size, Sort.by("lastName").ascending());
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(DEFAULT_SORT_FIELD).ascending());
 
         SearchRequest request = SearchRequest.builder()
                 .nameQuery(nameQuery)
@@ -71,7 +74,6 @@ public class ClientController {
         model.addAttribute("companyQuery", companyQuery);
         model.addAttribute("searchType", searchType);
 
-        // Сообщения для UI
         if (statusIds != null && !statusIds.isEmpty()) {
             model.addAttribute("filterMessage", 
                 "Showing " + clientPage.getTotalElements() + " clients filtered by selected statuses");

@@ -5,7 +5,10 @@ import java.time.LocalDate;
 
 @Component
 public class ClientDatesValidationStrategy implements ValidationStrategy {
-    private static final LocalDate MIN_DATE = LocalDate.of(2015, 1, 1);
+    private static final int MIN_YEAR = 2015;
+    private static final int MIN_MONTH = 1;
+    private static final int MIN_DAY = 1;
+    private static final LocalDate MIN_DATE = LocalDate.of(MIN_YEAR, MIN_MONTH, MIN_DAY);
 
     @Override
     public boolean isValid(String value) {
@@ -22,6 +25,6 @@ public class ClientDatesValidationStrategy implements ValidationStrategy {
 
     @Override
     public String getErrorMessage() {
-        return "Date must be on or after January 1, 2015";
+        return "Date must be on or after January 1, " + MIN_YEAR;
     }
 }

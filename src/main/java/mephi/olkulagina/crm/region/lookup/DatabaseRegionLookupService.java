@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RegionLookupServiceImpl implements RegionLookupService {
+public class DatabaseRegionLookupService implements RegionLookupService {
     
     private final RegionRepository regionRepository;
     
-    public RegionLookupServiceImpl(RegionRepository regionRepository) {
+    public DatabaseRegionLookupService(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
     }
     

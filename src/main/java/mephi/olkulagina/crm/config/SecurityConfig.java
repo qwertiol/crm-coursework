@@ -1,6 +1,6 @@
 package mephi.olkulagina.crm.config;
 
-import mephi.olkulagina.crm.user.UserDetailsServiceImpl;
+import mephi.olkulagina.crm.user.DatabaseUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,10 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final DatabaseUserDetailsService databaseUserDetailsService;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
+    public SecurityConfig(DatabaseUserDetailsService databaseUserDetailsService) {
+        this.databaseUserDetailsService = databaseUserDetailsService;
     }
 
     @Bean

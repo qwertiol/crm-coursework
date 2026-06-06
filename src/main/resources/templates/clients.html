@@ -97,13 +97,13 @@
                 </table>
 
                 <div class="pagination" th:if="${totalPages > 1}">
-                    <a th:if="${currentPage > 0}" th:href="@{/clients(page=${currentPage - 1}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}">← Previous</a>
+                    <a th:if="${currentPage > 0}" th:href="@{/clients(page=${currentPage - 1}, size=${T(mephi.olkulagina.crm.client.ClientController).DEFAULT_PAGE_SIZE}, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}">← Previous</a>
                     <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                        <a th:href="@{/clients(page=${i}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}" 
+                        <a th:href="@{/clients(page=${i}, size=${T(mephi.olkulagina.crm.client.ClientController).DEFAULT_PAGE_SIZE}, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}" 
                            th:text="${i + 1}" 
                            th:class="${i == currentPage} ? 'active' : ''">1</a>
                     </span>
-                    <a th:if="${currentPage < totalPages - 1}" th:href="@{/clients(page=${currentPage + 1}, size=30, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}">Next →</a>
+                    <a th:if="${currentPage < totalPages - 1}" th:href="@{/clients(page=${currentPage + 1}, size=${T(mephi.olkulagina.crm.client.ClientController).DEFAULT_PAGE_SIZE}, statusIds=${selectedStatusIds}, nameQuery=${nameQuery}, companyQuery=${companyQuery}, searchType=${searchType})}">Next →</a>
                 </div>
             </div>
         </div>

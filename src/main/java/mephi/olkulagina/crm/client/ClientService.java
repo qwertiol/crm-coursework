@@ -1,45 +1,45 @@
 package mephi.olkulagina.crm.client;
 
 import mephi.olkulagina.crm.company.Company;
-import mephi.olkulagina.crm.company.CompanyRepository;
+import mephi.olkulagina.crm.company.CompanyService;
 import mephi.olkulagina.crm.region.Region;
-import mephi.olkulagina.crm.region.RegionRepository;
+import mephi.olkulagina.crm.region.RegionService;
 import mephi.olkulagina.crm.status.Status;
 import mephi.olkulagina.crm.status.StatusRepository;
 import mephi.olkulagina.crm.validation.ClientDatesValidationStrategy;
 import mephi.olkulagina.crm.validation.EmailValidationStrategy;
 import mephi.olkulagina.crm.validation.PhoneValidationStrategy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class ClientService {
 
+    private static final int MIN_NAME_LENGTH = 1;
+    private static final int MIN_DATE_YEAR = 2015;
+    private static final int MIN_DATE_MONTH = 1;
+    private static final int MIN_DATE_DAY = 1;
+
     private final ClientRepository clientRepository;
     private final StatusRepository statusRepository;
-    private final CompanyRepository companyRepository;
-    private final RegionRepository regionRepository;
+    private final CompanyService companyService;
+    private final RegionService regionService;
     private final EmailValidationStrategy emailValidator;
     private final PhoneValidationStrategy phoneValidator;
     private final ClientDatesValidationStrategy clientDatesValidator;
 
     public ClientService(ClientRepository clientRepository, StatusRepository statusRepository,
-                         CompanyRepository companyRepository, RegionRepository regionRepository) {
+                         CompanyService companyService, RegionService regionService) {
         this.clientRepository = clientRepository;
         this.statusRepository = statusRepository;
-        this.companyRepository = companyRepository;
-        this.regionRepository = regionRepository;
+        this.companyService = companyService;
+        this.regionService = regionService;
         this.emailValidator = new EmailValidationStrategy();
         this.phoneValidator = new PhoneValidationStrategy();
         this.clientDatesValidator = new ClientDatesValidationStrategy();
@@ -48,24 +48,6 @@ public class ClientService {
     @Transactional(readOnly = true)
     public Optional<Client> findById(Long id) {
         return clientRepository.findById(id);
-    }
-
-    public Company findOrCreateCompany(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return null;
-        }
-        String trimmed = name.trim();
-        return companyRepository.findByNameIgnoreCase(trimmed)
-                .orElseGet(() -> companyRepository.save(new Company(null, trimmed)));
-    }
-
-    public Region findOrCreateRegion(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return null;
-        }
-        String trimmed = name.trim();
-        return regionRepository.findByNameIgnoreCase(trimmed)
-                .orElseGet(() -> regionRepository.save(new Region(null, trimmed)));
     }
 
     public List<String> validateClientData(String email, String phone) {
@@ -89,10 +71,10 @@ public class ClientService {
     private void validateAllInputs(String lastName, String firstName, String email, String phone,
                                    String clientLevel, String registrationDate, String lastActivityDate,
                                    String source, Long statusId) {
-        if (lastName == null || lastName.isEmpty()) {
+        if (lastName == null || lastName.length() < MIN_NAME_LENGTH) {
             throw new RuntimeException("Last name is required");
         }
-        if (firstName == null || firstName.isEmpty()) {
+        if (firstName == null || firstName.length() < MIN_NAME_LENGTH) {
             throw new RuntimeException("First name is required");
         }
 
@@ -169,10 +151,10 @@ public class ClientService {
             client.setSpecialConditions(specialConditions);
         }
 
-        Company company = findOrCreateCompany(companyName);
+        Company company = companyService.findOrCreate(companyName);
         client.setCompany(company);
 
-        Region region = findOrCreateRegion(regionName);
+        Region region = regionService.findOrCreate(regionName);
         client.setRegion(region);
 
         if (registrationDate != null && !registrationDate.isEmpty()) {

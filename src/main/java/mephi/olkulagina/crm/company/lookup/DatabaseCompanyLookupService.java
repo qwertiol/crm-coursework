@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CompanyLookupServiceImpl implements CompanyLookupService {
+public class DatabaseCompanyLookupService implements CompanyLookupService {
     
     private final CompanyRepository companyRepository;
     
-    public CompanyLookupServiceImpl(CompanyRepository companyRepository) {
+    public DatabaseCompanyLookupService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
     
