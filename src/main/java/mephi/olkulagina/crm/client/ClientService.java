@@ -55,7 +55,7 @@ public class ClientService {
             return null;
         }
         String trimmed = name.trim();
-        return companyRepository.findByName(trimmed)
+        return companyRepository.findByNameIgnoreCase(trimmed)
                 .orElseGet(() -> companyRepository.save(new Company(null, trimmed)));
     }
 
@@ -64,7 +64,7 @@ public class ClientService {
             return null;
         }
         String trimmed = name.trim();
-        return regionRepository.findByName(trimmed)
+        return regionRepository.findByNameIgnoreCase(trimmed)
                 .orElseGet(() -> regionRepository.save(new Region(null, trimmed)));
     }
 
@@ -86,11 +86,9 @@ public class ClientService {
         return errors;
     }
 
-    public Client updateClient(Long id, String lastName, String firstName, String middleName,
-                               String phone, String email, String position, String department,
-                               String clientLevel, String specialConditions, String companyName,
-                               String regionName, String registrationDate, String lastActivityDate,
-                               String source, Long statusId) {
+    private void validateAllInputs(String lastName, String firstName, String email, String phone,
+                                   String clientLevel, String registrationDate, String lastActivityDate,
+                                   String source, Long statusId) {
         if (lastName == null || lastName.isEmpty()) {
             throw new RuntimeException("Last name is required");
         }
@@ -102,6 +100,47 @@ public class ClientService {
         if (!errors.isEmpty()) {
             throw new RuntimeException(String.join(", ", errors));
         }
+
+        if (registrationDate != null && !registrationDate.isEmpty()) {
+            if (!clientDatesValidator.isValid(registrationDate)) {
+                throw new RuntimeException("Field 'registrationDate': " + clientDatesValidator.getErrorMessage());
+            }
+        }
+        if (lastActivityDate != null && !lastActivityDate.isEmpty()) {
+            if (!clientDatesValidator.isValid(lastActivityDate)) {
+                throw new RuntimeException("Field 'lastActivityDate': " + clientDatesValidator.getErrorMessage());
+            }
+        }
+
+        if (clientLevel != null && !clientLevel.isEmpty()) {
+            try {
+                ClientLevel.valueOf(clientLevel);
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid client level: " + clientLevel);
+            }
+        }
+        if (source != null && !source.isEmpty()) {
+            try {
+                ClientSource.valueOf(source);
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid source: " + source);
+            }
+        }
+
+        if (statusId != null) {
+            statusRepository.findById(statusId)
+                    .orElseThrow(() -> new RuntimeException("Status not found"));
+        }
+    }
+
+    public Client updateClient(Long id, String lastName, String firstName, String middleName,
+                               String phone, String email, String position, String department,
+                               String clientLevel, String specialConditions, String companyName,
+                               String regionName, String registrationDate, String lastActivityDate,
+                               String source, Long statusId) {
+
+        validateAllInputs(lastName, firstName, email, phone, clientLevel,
+                registrationDate, lastActivityDate, source, statusId);
 
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
@@ -137,15 +176,9 @@ public class ClientService {
         client.setRegion(region);
 
         if (registrationDate != null && !registrationDate.isEmpty()) {
-            if (!clientDatesValidator.isValid(registrationDate)) {
-                throw new RuntimeException("Field 'registrationDate': " + clientDatesValidator.getErrorMessage());
-            }
             client.setRegistrationDate(LocalDate.parse(registrationDate));
         }
         if (lastActivityDate != null && !lastActivityDate.isEmpty()) {
-            if (!clientDatesValidator.isValid(lastActivityDate)) {
-                throw new RuntimeException("Field 'lastActivityDate': " + clientDatesValidator.getErrorMessage());
-            }
             client.setLastActivityDate(LocalDate.parse(lastActivityDate));
         }
         if (source != null && !source.isEmpty()) {

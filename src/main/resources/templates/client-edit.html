@@ -78,7 +78,10 @@
                 <label for="lastActivityDate">Last Activity Date</label>
                 <input type="date" id="lastActivityDate" name="lastActivityDate" th:value="${client.lastActivityDate != null} ? ${client.lastActivityDate} : ''">
 
-                <button type="submit">Save Changes</button>
+                <button type="submit" id="saveBtn">
+                    <span class="btn-text">Save Changes</span>
+                    <span class="btn-loading" style="display:none;">Saving...</span>
+                </button>
             </form>
 
             <div class="actions">
@@ -129,6 +132,13 @@
                 if (!input.contains(e.target) && !suggestionsDiv.contains(e.target)) {
                     suggestionsDiv.classList.remove('open');
                 }
+            });
+            
+            document.querySelector('form').addEventListener('submit', function() {
+                const btn = document.getElementById('saveBtn');
+                btn.disabled = true;
+                btn.querySelector('.btn-text').style.display = 'none';
+                btn.querySelector('.btn-loading').style.display = 'inline';
             });
         }
         

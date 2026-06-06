@@ -709,3 +709,12 @@ footer {
     color: #f6ad55;
     font-weight: 600;
 }
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.btn-loading {
+    font-style: italic;
+}

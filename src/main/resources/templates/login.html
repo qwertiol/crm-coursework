@@ -16,11 +16,23 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
                 
-                <button type="submit">Login</button>
+                <button type="submit" id="loginBtn">
+                    <span class="btn-text">Login</span>
+                    <span class="btn-loading" style="display:none;">Logging in...</span>
+                </button>
             </form>
             <p>Don't have an account? <a th:href="@{/register}">Register</a></p>
         </div>
     </main>
     <footer th:replace="~{layout :: footer}"></footer>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true;
+            btn.querySelector('.btn-text').style.display = 'none';
+            btn.querySelector('.btn-loading').style.display = 'inline';
+        });
+    </script>
 </body>
 </html>
