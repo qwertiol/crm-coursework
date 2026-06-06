@@ -1,9 +1,8 @@
 package mephi.olkulagina.crm.client;
 
-import mephi.olkulagina.crm.company.CompanyRepository;
 import mephi.olkulagina.crm.company.CompanyService;
 import mephi.olkulagina.crm.region.RegionService;
-import mephi.olkulagina.crm.search.*;
+import mephi.olkulagina.crm.search.SearchRequest;
 import mephi.olkulagina.crm.status.StatusService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,21 +22,21 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
+    private final ClientSearchService clientSearchService;
     private final StatusService statusService;
     private final RegionService regionService;
     private final CompanyService companyService;
-    private final ClientRepository clientRepository;
-    private final CompanyRepository companyRepository;
 
-    public ClientController(ClientService clientService, StatusService statusService,
-                            RegionService regionService, CompanyService companyService,
-                            ClientRepository clientRepository, CompanyRepository companyRepository) {
+    public ClientController(ClientService clientService,
+                            ClientSearchService clientSearchService,
+                            StatusService statusService,
+                            RegionService regionService,
+                            CompanyService companyService) {
         this.clientService = clientService;
+        this.clientSearchService = clientSearchService;
         this.statusService = statusService;
         this.regionService = regionService;
         this.companyService = companyService;
-        this.clientRepository = clientRepository;
-        this.companyRepository = companyRepository;
     }
 
     @GetMapping("/clients")
@@ -52,20 +51,14 @@ public class ClientController {
 
         PageRequest pageable = PageRequest.of(page, size, Sort.by("lastName").ascending());
 
-        SearchRequest request = new SearchRequest();
-        request.setNameQuery(nameQuery);
-        request.setCompanyQuery(companyQuery);
-        request.setStatusIds(statusIds);
-        request.setSearchType(searchType);
+        SearchRequest request = SearchRequest.builder()
+                .nameQuery(nameQuery)
+                .companyQuery(companyQuery)
+                .statusIds(statusIds)
+                .searchType(searchType)
+                .build();
 
-        NameSearchHandler nameHandler = new NameSearchHandler(clientRepository);
-        CompanySearchHandler companyHandler = new CompanySearchHandler(clientRepository, companyRepository);
-        NoCriteriaSearchHandler noCriteria = new NoCriteriaSearchHandler(clientRepository);
-
-        nameHandler.setNext(companyHandler);
-        companyHandler.setNext(noCriteria);
-
-        Page<Client> clientPage = nameHandler.handle(request, pageable);
+        Page<Client> clientPage = clientSearchService.search(request, pageable);
 
         model.addAttribute("clients", clientPage.getContent());
         model.addAttribute("currentPage", page);
@@ -78,16 +71,20 @@ public class ClientController {
         model.addAttribute("companyQuery", companyQuery);
         model.addAttribute("searchType", searchType);
 
+        // Сообщения для UI
         if (statusIds != null && !statusIds.isEmpty()) {
-            model.addAttribute("filterMessage", "Showing " + clientPage.getTotalElements() + " clients filtered by selected statuses");
+            model.addAttribute("filterMessage", 
+                "Showing " + clientPage.getTotalElements() + " clients filtered by selected statuses");
         }
 
         if ("name".equals(searchType) && nameQuery != null && !nameQuery.isBlank()) {
-            model.addAttribute("searchMessage", "Found " + clientPage.getTotalElements() + " clients matching name \"" + nameQuery.trim() + "\"");
+            model.addAttribute("searchMessage", 
+                "Found " + clientPage.getTotalElements() + " clients matching name \"" + nameQuery.trim() + "\"");
         }
 
         if ("company".equals(searchType) && companyQuery != null && !companyQuery.isBlank()) {
-            model.addAttribute("searchMessage", "Found " + clientPage.getTotalElements() + " clients matching company \"" + companyQuery.trim() + "\"");
+            model.addAttribute("searchMessage", 
+                "Found " + clientPage.getTotalElements() + " clients matching company \"" + companyQuery.trim() + "\"");
         }
 
         return "clients";

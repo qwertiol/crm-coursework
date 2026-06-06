@@ -1,52 +1,68 @@
 package mephi.olkulagina.crm.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchRequest {
+
     private String nameQuery;
     private String companyQuery;
     private List<Long> statusIds;
     private String searchType;
 
-    public SearchRequest() {
+    private SearchRequest() {
+        this.statusIds = new ArrayList<>();
     }
 
-    public SearchRequest(String nameQuery, String companyQuery, List<Long> statusIds, String searchType) {
-        this.nameQuery = nameQuery;
-        this.companyQuery = companyQuery;
-        this.statusIds = statusIds;
-        this.searchType = searchType;
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getNameQuery() {
         return nameQuery;
     }
 
-    public void setNameQuery(String nameQuery) {
-        this.nameQuery = nameQuery;
-    }
-
     public String getCompanyQuery() {
         return companyQuery;
     }
 
-    public void setCompanyQuery(String companyQuery) {
-        this.companyQuery = companyQuery;
-    }
-
     public List<Long> getStatusIds() {
-        return statusIds;
-    }
-
-    public void setStatusIds(List<Long> statusIds) {
-        this.statusIds = statusIds;
+        return statusIds != null ? List.copyOf(statusIds) : List.of();
     }
 
     public String getSearchType() {
         return searchType;
     }
 
-    public void setSearchType(String searchType) {
-        this.searchType = searchType;
+    public static class Builder {
+        private final SearchRequest request;
+
+        private Builder() {
+            this.request = new SearchRequest();
+        }
+
+        public Builder nameQuery(String nameQuery) {
+            request.nameQuery = nameQuery;
+            return this;
+        }
+
+        public Builder companyQuery(String companyQuery) {
+            request.companyQuery = companyQuery;
+            return this;
+        }
+
+        public Builder statusIds(List<Long> statusIds) {
+            request.statusIds = statusIds != null ? new ArrayList<>(statusIds) : new ArrayList<>();
+            return this;
+        }
+
+        public Builder searchType(String searchType) {
+            request.searchType = searchType;
+            return this;
+        }
+
+        public SearchRequest build() {
+            return request;
+        }
     }
 }

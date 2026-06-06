@@ -19,8 +19,4 @@ public class CompanyService {
     public List<Company> findAll() {
         return companyRepository.findAll();
     }
-
-    public Optional<Company> findById(Long id) {
-        return companyRepository.findById(id);
-    }
 }

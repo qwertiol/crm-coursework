@@ -23,8 +23,4 @@ public class StatusService {
     public Optional<Status> findById(Long id) {
         return statusRepository.findById(id);
     }
-
-    public Optional<Status> findByName(String name) {
-        return statusRepository.findByName(name);
-    }
 }
