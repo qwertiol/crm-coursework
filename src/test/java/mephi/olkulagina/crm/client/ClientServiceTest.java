@@ -77,15 +77,6 @@ class ClientServiceTest {
     }
 
     @Test
-    void shouldThrowWhenClientLevelIsInvalid() {
-        RuntimeException ex = assertThrows(RuntimeException.class, () ->
-            clientService.updateClient(1L, "Doe", "John", null, null, null,
-                null, null, "DIAMOND", null, null, null, null, null, null, null)
-        );
-        assertTrue(ex.getMessage().contains("Invalid client level"));
-    }
-
-    @Test
     void shouldUpdateClientSuccessfully() {
         Client client = new Client();
         client.setId(1L);

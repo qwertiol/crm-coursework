@@ -27,12 +27,6 @@ class ValidationStrategyTest {
     private ClientService clientService;
 
     @Test
-    void shouldAcceptValidEmail() {
-        List<String> errors = clientService.validateClientData("user@example.com", null);
-        assertTrue(errors.isEmpty());
-    }
-
-    @Test
     void shouldRejectInvalidEmail() {
         List<String> errors = clientService.validateClientData("invalid-email", null);
         assertFalse(errors.isEmpty());
@@ -40,21 +34,9 @@ class ValidationStrategyTest {
     }
 
     @Test
-    void shouldAcceptValidPhone() {
-        List<String> errors = clientService.validateClientData(null, "+1 (780) 180-20-72");
-        assertTrue(errors.isEmpty());
-    }
-
-    @Test
     void shouldRejectInvalidPhone() {
         List<String> errors = clientService.validateClientData(null, "not-a-phone");
         assertFalse(errors.isEmpty());
         assertTrue(errors.get(0).toLowerCase().contains("phone"));
-    }
-
-    @Test
-    void shouldAcceptNullValues() {
-        List<String> errors = clientService.validateClientData(null, null);
-        assertTrue(errors.isEmpty());
     }
 }

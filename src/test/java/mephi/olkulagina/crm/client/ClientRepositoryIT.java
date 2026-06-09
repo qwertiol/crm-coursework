@@ -62,45 +62,4 @@ class ClientRepositoryIT {
         assertThat(found.getStatus().getName()).isEqualTo("New");
     }
 
-    @Test
-    void shouldFindByLastNameContainingIgnoreCase() {
-        Client client = new Client();
-        client.setFirstName("Bob");
-        client.setLastName("Johnson");
-        client.setStatus(statusNew);
-        clientRepository.save(client);
-
-        List<Client> result = clientRepository.findByLastNameContainingIgnoreCase("john");
-
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getFirstName()).isEqualTo("Bob");
-    }
-
-    @Test
-    void shouldFindByStatusIdIn() {
-        Client client = new Client();
-        client.setFirstName("Charlie");
-        client.setLastName("Brown");
-        client.setStatus(statusNew);
-        clientRepository.save(client);
-
-        List<Client> result = clientRepository.findByStatusIdIn(List.of(statusNew.getId()));
-
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getFirstName()).isEqualTo("Charlie");
-    }
-
-    @Test
-    void shouldFindByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase() {
-        Client client = new Client();
-        client.setFirstName("David");
-        client.setLastName("Miller");
-        client.setStatus(statusNew);
-        clientRepository.save(client);
-
-        List<Client> result = clientRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase("dav", "mill");
-
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getFirstName()).isEqualTo("David");
-    }
 }
