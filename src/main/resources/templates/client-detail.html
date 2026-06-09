@@ -113,12 +113,7 @@
                                     </div>
                                     <div class="status-dropdown" id="statusDropdown">
                                         <form th:action="@{/clients/{id}/status(id=${client.id})}" method="post">
-                                            <select name="statusId" required>
-                                                <option th:each="s : ${statuses}"
-                                                        th:value="${s.id}"
-                                                        th:text="${s.name}"
-                                                        th:selected="${client.status != null and s.id == client.status.id}">
-                                                </option>
+                                            <select name="statusId" id="statusSelect" required>
                                             </select>
                                             <button type="submit">Save</button>
                                         </form>
@@ -175,6 +170,24 @@
                 document.getElementById('statusDropdown').classList.remove('open');
             }
         });
+        
+        fetch('/api/statuses')
+            .then(r => r.json())
+            .then(statuses => {
+                const select = document.getElementById('statusSelect');
+                const currentStatusId = /*[[${client.status != null ? client.status.id : ''}]]*/ '';
+
+                statuses.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    if (String(s.id) === String(currentStatusId)) {
+                        opt.selected = true;
+                    }
+                    select.appendChild(opt);
+                });
+            })
+            .catch(err => console.error('Failed to load statuses:', err));
     </script>
 </body>
 </html>
