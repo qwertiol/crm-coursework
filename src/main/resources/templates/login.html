@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Login')}"></head>
+<body>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <div class="auth-container">
+            <div th:replace="~{layout :: messages}"></div>
+            <div th:if="${param.error}" class="alert error">Invalid username or password.</div>
+            <div th:if="${param.logout}" class="alert success">You have been logged out successfully.</div>
+            <h1>Login</h1>
+            <form th:action="@{/login}" method="post">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit" id="loginBtn">
+                    <span class="btn-text">Login</span>
+                    <span class="btn-loading" style="display:none;">Logging in...</span>
+                </button>
+            </form>
+            <p>Don't have an account? <a th:href="@{/register}">Register</a></p>
+        </div>
+    </main>
+    <footer th:replace="~{layout :: footer}"></footer>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true;
+            btn.querySelector('.btn-text').style.display = 'none';
+            btn.querySelector('.btn-loading').style.display = 'inline';
+        });
+    </script>
+</body>
+</html>

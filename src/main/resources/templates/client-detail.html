@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Client Details')}"></head>
+<body>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <div class="detail-container">
+            <div th:replace="~{layout :: messages}"></div>
+
+            <h1>
+                <span th:text="${client.firstName} + ' ' + ${client.middleName != null ? client.middleName + ' ' : ''} + ${client.lastName}"></span>
+            </h1>
+
+            <div class="client-card">
+                <div class="client-main">
+                    <div class="info-block">
+                        <h3>Contact</h3>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                                </svg>
+                                Phone
+                            </span>
+                            <span class="info-value" th:text="${client.phone != null} ? ${client.phone} : '—'"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                                Email
+                            </span>
+                            <span class="info-value" th:text="${client.email != null} ? ${client.email} : '—'"></span>
+                        </div>
+                    </div>
+
+                    <div class="info-block">
+                        <h3>Company</h3>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                                </svg>
+                                Company
+                            </span>
+                            <span class="info-value" th:text="${client.company != null} ? ${client.company.name} : '—'"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                </svg>
+                                Department
+                            </span>
+                            <span class="info-value" th:text="${client.department != null} ? ${client.department} : '—'"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                                </svg>
+                                Position
+                            </span>
+                            <span class="info-value" th:text="${client.position != null} ? ${client.position} : '—'"></span>
+                        </div>
+                    </div>
+
+                    <div class="info-block">
+                        <h3>Region</h3>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                Region
+                            </span>
+                            <span class="info-value" th:text="${client.region != null} ? ${client.region.name} : '—'"></span>
+                        </div>
+                    </div>
+
+                    <div class="info-block">
+                        <h3>Loyalty Program</h3>
+                        <div class="info-row">
+                            <span class="info-label">Level</span>
+                            <span class="info-value">
+                                <span class="level-badge" th:if="${client.clientLevel != null}"
+                                      th:text="${client.clientLevel.displayName}"
+                                      th:classappend="${client.clientLevel.name() == 'BRONZE'} ? ' level-bronze' : (${client.clientLevel.name() == 'SILVER'} ? ' level-silver' : (${client.clientLevel.name() == 'GOLD'} ? ' level-gold' : (${client.clientLevel.name() == 'PLATINUM'} ? ' level-platinum' : ' level-vip')))">
+                                </span>
+                                <span th:if="${client.clientLevel == null}">—</span>
+                            </span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Special Conditions</span>
+                            <span class="info-value" th:text="${client.specialConditions != null} ? ${client.specialConditions} : '—'"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="client-side">
+                    <div class="info-block">
+                        <h3>Activity Info</h3>
+                        <div class="info-row">
+                            <span class="info-label">Status</span>
+                            <span class="info-value">
+                                <div class="status-editor" id="statusEditor">
+                                    <div class="status-display">
+                                        <span class="status-badge-detail" th:if="${client.status != null}"
+                                              th:text="${client.status.name}"
+                                              th:classappend="${client.status.name == 'New'} ? ' status-new' : (${client.status.name == 'In Negotiation'} ? ' status-negotiation' : (${client.status.name == 'Deal'} ? ' status-deal' : (${client.status.name == 'Rejected'} ? ' status-rejected' : ' status-attention')))">Active</span>
+                                        <span th:if="${client.status == null}" class="status-badge-detail status-new">No status</span>
+                                        <span class="status-edit-icon" onclick="toggleStatusEdit()" title="Change status">✎</span>
+                                    </div>
+                                    <div class="status-dropdown" id="statusDropdown">
+                                        <form th:action="@{/clients/{id}/status(id=${client.id})}" method="post">
+                                            <select name="statusId" required>
+                                                <option th:each="s : ${statuses}"
+                                                        th:value="${s.id}"
+                                                        th:text="${s.name}"
+                                                        th:selected="${client.status != null and s.id == client.status.id}">
+                                                </option>
+                                            </select>
+                                            <button type="submit">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+                                </svg>
+                                Registration
+                            </span>
+                            <span class="info-value" th:text="${client.registrationDate != null} ? ${client.registrationDate} : '—'"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                                </svg>
+                                Last Activity
+                            </span>
+                            <span class="info-value" th:text="${client.lastActivityDate != null} ? ${client.lastActivityDate} : '—'"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">
+                                    <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+                                </svg>
+                                Source
+                            </span>
+                            <span class="info-value" th:text="${client.source != null} ? ${client.source.displayName} : '—'"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="client-footer">
+                <a th:href="@{/clients}" class="back-link">← Back to Client List</a>
+                <a th:href="@{/clients/{id}/edit(id=${client.id})}" class="edit-btn">Edit Client</a>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="~{layout :: footer}"></footer>
+
+    <script>
+        function toggleStatusEdit() {
+            document.getElementById('statusDropdown').classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const editor = document.getElementById('statusEditor');
+            if (!editor.contains(e.target)) {
+                document.getElementById('statusDropdown').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-status-not-null
+      author: olkulagina
+      changes:
+        - update:
+            tableName: client
+            columns:
+              - column:
+                  name: status_id
+                  valueNumeric: 1
+            where: status_id IS NULL
+        - addNotNullConstraint:
+            tableName: client
+            columnName: status_id
+            columnDataType: bigint

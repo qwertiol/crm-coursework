@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Error')}"></head>
+<body>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <h1>Error</h1>
+        <p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+        <a th:href="@{/clients}">← Back to Client List</a>
+    </main>
+    <footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

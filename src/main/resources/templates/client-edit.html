@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Edit Client')}"></head>
+<body>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <div class="edit-container">
+            <div th:replace="~{layout :: messages}"></div>
+            <h1>Edit Client</h1>
+
+            <form th:action="@{/clients/{id}/update(id=${client.id})}" method="post">
+                <input type="hidden" name="statusId" th:if="${client.status != null}" th:value="${client.status.id}">
+                
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" th:value="${client.lastName}" required>
+
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" th:value="${client.firstName}" required>
+
+                <label for="middleName">Middle Name</label>
+                <input type="text" id="middleName" name="middleName" th:value="${client.middleName}">
+
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" th:value="${client.phone}" placeholder="+1 (XXX) XXX-XXXX">
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" th:value="${client.email}">
+
+                <label for="position">Position</label>
+                <input type="text" id="position" name="position" th:value="${client.position}">
+
+                <label for="department">Department</label>
+                <input type="text" id="department" name="department" th:value="${client.department}">
+
+                <div class="autocomplete-field">
+                    <label for="companyName">Company</label>
+                    <input type="text" id="companyName" name="companyName" 
+                           th:value="${client.company != null} ? ${client.company.name} : ''" 
+                           placeholder="Type company name..."
+                           autocomplete="off">
+                    <div id="companySuggestions" class="suggestions-dropdown"></div>
+                </div>
+
+                <div class="autocomplete-field">
+                    <label for="regionName">Region</label>
+                    <input type="text" id="regionName" name="regionName" 
+                           th:value="${client.region != null} ? ${client.region.name} : ''" 
+                           placeholder="Type region name..."
+                           autocomplete="off">
+                    <div id="regionSuggestions" class="suggestions-dropdown"></div>
+                </div>
+
+                <label for="clientLevel">Client Level</label>
+                <select id="clientLevel" name="clientLevel">
+                    <option value="">— Select Level —</option>
+                    <option value="BRONZE" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'BRONZE'}">Bronze</option>
+                    <option value="SILVER" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'SILVER'}">Silver</option>
+                    <option value="GOLD" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'GOLD'}">Gold</option>
+                    <option value="PLATINUM" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'PLATINUM'}">Platinum</option>
+                    <option value="VIP" th:selected="${client.clientLevel != null and client.clientLevel.name() == 'VIP'}">Vip</option>
+                </select>
+
+                <label for="specialConditions">Special Conditions</label>
+                <input type="text" id="specialConditions" name="specialConditions" th:value="${client.specialConditions}">
+
+                <label for="source">Source</label>
+                <select id="source" name="source">
+                    <option value="">— Select Source —</option>
+                    <option value="WEBSITE" th:selected="${client.source != null and client.source.name() == 'WEBSITE'}">Website</option>
+                    <option value="REFERRAL" th:selected="${client.source != null and client.source.name() == 'REFERRAL'}">Referral</option>
+                    <option value="SOCIAL_MEDIA" th:selected="${client.source != null and client.source.name() == 'SOCIAL_MEDIA'}">Social media</option>
+                    <option value="DIRECT" th:selected="${client.source != null and client.source.name() == 'DIRECT'}">Direct</option>
+                    <option value="PARTNER" th:selected="${client.source != null and client.source.name() == 'PARTNER'}">Partner</option>
+                    <option value="OTHER" th:selected="${client.source != null and client.source.name() == 'OTHER'}">Other</option>
+                </select>
+
+                <label for="registrationDate">Registration Date</label>
+                <input type="date" id="registrationDate" name="registrationDate" th:value="${client.registrationDate != null} ? ${client.registrationDate} : ''">
+
+                <label for="lastActivityDate">Last Activity Date</label>
+                <input type="date" id="lastActivityDate" name="lastActivityDate" th:value="${client.lastActivityDate != null} ? ${client.lastActivityDate} : ''">
+
+                <button type="submit" id="saveBtn">
+                    <span class="btn-text">Save Changes</span>
+                    <span class="btn-loading" style="display:none;">Saving...</span>
+                </button>
+            </form>
+
+            <div class="actions">
+                <a th:href="@{/clients/{id}(id=${client.id})}">Cancel</a>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="~{layout :: footer}"></footer>
+
+    <script>
+        function setupAutocomplete(inputId, suggestionsId, apiUrl) {
+            const input = document.getElementById(inputId);
+            const suggestionsDiv = document.getElementById(suggestionsId);
+            
+            if (!input) return;
+            
+            input.addEventListener('input', function() {
+                const val = this.value.trim();
+                if (val.length < 1) {
+                    suggestionsDiv.classList.remove('open');
+                    suggestionsDiv.innerHTML = '';
+                    return;
+                }
+                fetch(apiUrl + '?q=' + encodeURIComponent(val))
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        suggestionsDiv.innerHTML = '';
+                        if (data.length === 0) {
+                            suggestionsDiv.classList.remove('open');
+                            return;
+                        }
+                        data.forEach(function(item) {
+                            const div = document.createElement('div');
+                            div.className = 'suggestion-item';
+                            div.textContent = item.name;
+                            div.addEventListener('click', function() {
+                                input.value = item.name;
+                                suggestionsDiv.classList.remove('open');
+                                suggestionsDiv.innerHTML = '';
+                            });
+                            suggestionsDiv.appendChild(div);
+                        });
+                        suggestionsDiv.classList.add('open');
+                    });
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.classList.remove('open');
+                }
+            });
+            
+            document.querySelector('form').addEventListener('submit', function() {
+                const btn = document.getElementById('saveBtn');
+                btn.disabled = true;
+                btn.querySelector('.btn-text').style.display = 'none';
+                btn.querySelector('.btn-loading').style.display = 'inline';
+            });
+        }
+        
+        setupAutocomplete('companyName', 'companySuggestions', '/api/companies/search');
+        setupAutocomplete('regionName', 'regionSuggestions', '/api/regions/search');
+    </script>
+</body>
+</html>
