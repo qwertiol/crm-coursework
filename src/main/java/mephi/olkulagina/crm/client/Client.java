@@ -59,8 +59,8 @@ public class Client {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
     private Status status;
 
     public Client() {

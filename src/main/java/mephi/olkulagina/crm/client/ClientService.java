@@ -22,9 +22,6 @@ import java.util.Optional;
 public class ClientService {
 
     private static final int MIN_NAME_LENGTH = 1;
-    private static final int MIN_DATE_YEAR = 2015;
-    private static final int MIN_DATE_MONTH = 1;
-    private static final int MIN_DATE_DAY = 1;
 
     private final ClientRepository clientRepository;
     private final StatusRepository statusRepository;

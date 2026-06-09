@@ -113,7 +113,7 @@ public class ClientController {
         return "client-edit";
     }
 
-    @PostMapping("/clients/{id}/update")
+        @PostMapping("/clients/{id}/update")
     public String updateClient(
             @PathVariable Long id,
             @RequestParam String lastName,
@@ -130,11 +130,12 @@ public class ClientController {
             @RequestParam(required = false) String registrationDate,
             @RequestParam(required = false) String lastActivityDate,
             @RequestParam(required = false) String source,
+            @RequestParam(required = false) Long statusId,
             RedirectAttributes redirectAttributes) {
         try {
             clientService.updateClient(id, lastName, firstName, middleName, phone, email,
                     position, department, clientLevel, specialConditions, companyName,
-                    regionName, registrationDate, lastActivityDate, source, null);
+                    regionName, registrationDate, lastActivityDate, source, statusId);
             redirectAttributes.addFlashAttribute("successMessage", "Changes saved successfully");
             return "redirect:/clients/" + id;
         } catch (RuntimeException e) {

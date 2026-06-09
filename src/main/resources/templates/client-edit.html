@@ -9,6 +9,8 @@
             <h1>Edit Client</h1>
 
             <form th:action="@{/clients/{id}/update(id=${client.id})}" method="post">
+                <input type="hidden" name="statusId" th:if="${client.status != null}" th:value="${client.status.id}">
+                
                 <label for="lastName">Last Name</label>
                 <input type="text" id="lastName" name="lastName" th:value="${client.lastName}" required>
 
