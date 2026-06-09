@@ -1,4 +1,4 @@
-package mephi.olkulagina.crm.integration;
+package mephi.olkulagina.crm.client.searchandfilter;
 
 import mephi.olkulagina.crm.client.Client;
 import mephi.olkulagina.crm.client.ClientRepository;

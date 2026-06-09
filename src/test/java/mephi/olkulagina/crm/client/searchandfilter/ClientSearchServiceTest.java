@@ -1,4 +1,4 @@
-package mephi.olkulagina.crm.client;
+package mephi.olkulagina.crm.client.searchandfilter;
 
 import mephi.olkulagina.crm.search.SearchRequest;
 import mephi.olkulagina.crm.specification.SpecificationFactory;
@@ -12,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import mephi.olkulagina.crm.client.Client;
+import mephi.olkulagina.crm.client.ClientRepository;
+import mephi.olkulagina.crm.client.ClientSearchService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

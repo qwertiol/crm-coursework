@@ -1,4 +1,4 @@
-package mephi.olkulagina.crm.validation;
+package mephi.olkulagina.crm.client.validation;
 
 import mephi.olkulagina.crm.client.ClientRepository;
 import mephi.olkulagina.crm.client.ClientService;
