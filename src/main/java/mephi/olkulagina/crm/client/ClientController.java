@@ -73,6 +73,7 @@ public class ClientController {
         model.addAttribute("nameQuery", nameQuery);
         model.addAttribute("companyQuery", companyQuery);
         model.addAttribute("searchType", searchType);
+        model.addAttribute("defaultPageSize", DEFAULT_PAGE_SIZE);
 
         if (statusIds != null && !statusIds.isEmpty()) {
             model.addAttribute("filterMessage", 
@@ -97,7 +98,7 @@ public class ClientController {
         Client client = clientService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         model.addAttribute("client", client);
-        model.addAttribute("statuses", statusService.findAll());
+        //model.addAttribute("statuses", statusService.findAll());
         return "client-detail";
     }
 
@@ -107,7 +108,7 @@ public class ClientController {
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         List<mephi.olkulagina.crm.status.Status> statuses = statusService.findAll();
         model.addAttribute("client", client);
-        model.addAttribute("statuses", statuses);
+        //model.addAttribute("statuses", statuses);
         model.addAttribute("regions", regionService.findAll());
         model.addAttribute("companies", companyService.findAll());
         return "client-edit";

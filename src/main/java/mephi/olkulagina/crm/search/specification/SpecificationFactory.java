@@ -1,4 +1,4 @@
-package mephi.olkulagina.crm.specification;
+package mephi.olkulagina.crm.search.specification;
 
 import mephi.olkulagina.crm.search.SearchRequest;
 import mephi.olkulagina.crm.company.Company;
