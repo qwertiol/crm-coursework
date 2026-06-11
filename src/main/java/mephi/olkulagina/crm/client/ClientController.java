@@ -73,6 +73,7 @@ public class ClientController {
         model.addAttribute("nameQuery", nameQuery);
         model.addAttribute("companyQuery", companyQuery);
         model.addAttribute("searchType", searchType);
+        model.addAttribute("defaultPageSize", DEFAULT_PAGE_SIZE);
 
         if (statusIds != null && !statusIds.isEmpty()) {
             model.addAttribute("filterMessage", 
